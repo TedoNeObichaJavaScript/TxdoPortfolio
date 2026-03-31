@@ -359,8 +359,9 @@ function cmdAbout() {
   <span class="white">Cross-platform sleep intelligence app that tracks your brain,</span>
   <span class="white">controls your lights, challenges you to prove you're awake,</span>
   <span class="white">and turns mornings into a competitive sport.</span>
-  <span class="dim">Stack: Kotlin · Swift · Kotlin MP · React Native · Firestore</span>
-  <span class="dim">SQLCipher · BCrypt · Multi-Sensor Fusion · IoT (4 protocols)</span>
+  <span class="dim">Stack: Kotlin 1.9 · Jetpack Compose · MVVM/Clean Arch · Hilt</span>
+  <span class="dim">Room+SQLCipher · Firestore · Firebase Auth · FCM · Retrofit</span>
+  <span class="dim">Health Connect · ML Sensor Fusion · IoT · 137+ test cases</span>
   <span class="dim">Presented at</span> <span class="cyan">RoboDays '26</span> <span class="dim">· Targeting a $15B sleep tech market</span>
   <span class="red dim">Subject built the entire system solo in 1 year. Age: 18-19.</span>
 
@@ -453,9 +454,10 @@ function cmdProjects() {
   competitive gamification (XP, streaks, Wake Duels).
   IoT sunrise simulation via Home Assistant/Tuya/Tellur.</span>
   <span class="dim">Founder & Solo Developer · 1 year · Presented at RoboDays '26</span>
-  <span class="green">▸ Mobile + Backend + IoT</span>
-  <span class="yellow">Kotlin · Swift · Kotlin MP · React Native · Firestore
-  SQLCipher · BCrypt · Health Connect · Multi-Sensor Fusion</span>
+  <span class="green">▸ Mobile + Backend + IoT + ML</span>
+  <span class="yellow">Kotlin · Jetpack Compose · MVVM · Hilt · Room · SQLCipher
+  Firestore · Firebase Auth · FCM · Retrofit · OkHttp
+  Health Connect · ML Sensor Fusion · 137+ tests · CI/CD</span>
 </div>
 
 <div class="project-item">
@@ -882,14 +884,36 @@ function cmdNooze() {
   and generic webhooks. Your home puts you to sleep
   and wakes you up.</span>
 
-<span class="yellow bold">━━━ TECH STACK ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="yellow bold">━━━ TECH STACK (Android / Kotlin) ━━━━━━━━━━━━━━━━━━━━</span>
 
-  <span class="cyan">Mobile:</span>      <span class="white">Kotlin · Swift · Kotlin Multiplatform · React Native</span>
-  <span class="cyan">Backend:</span>     <span class="white">Firestore (cloud) · Room (local) · bi-directional sync</span>
-  <span class="cyan">Security:</span>    <span class="white">SQLCipher encrypted DB · BCrypt · DAO-level access</span>
-  <span class="cyan">Sensors:</span>     <span class="white">Accelerometer · Microphone · Health Connect</span>
-  <span class="cyan">IoT:</span>         <span class="white">Home Assistant · Tuya · Tellur · Webhooks</span>
-  <span class="cyan">Sync:</span>        <span class="white">Offline queue · Automatic conflict resolution</span>
+  <span class="green bold">Core</span>
+  <span class="cyan">Platform:</span>    <span class="white">React Native 0.73+ (TS) + Kotlin 1.9.22 native</span>
+  <span class="cyan">UI:</span>          <span class="white">Jetpack Compose + Material 3 (BOM 2024)</span>
+  <span class="cyan">Arch:</span>        <span class="white">MVVM + Clean Architecture + Repository Pattern</span>
+  <span class="cyan">DI:</span>          <span class="white">Hilt / Dagger 2</span>
+  <span class="cyan">Async:</span>       <span class="white">Kotlin Coroutines + StateFlow + SharedFlow</span>
+
+  <span class="green bold">Data & Security</span>
+  <span class="cyan">Local DB:</span>    <span class="white">Room + SQLCipher 4.5.4 (AES-256, 15 DAOs, 19 migrations)</span>
+  <span class="cyan">Backend:</span>     <span class="white">Firebase Firestore (real-time, offline persistence)</span>
+  <span class="cyan">Auth:</span>        <span class="white">Firebase Auth + Credential Mgr (OAuth 2.0, Google SSO)</span>
+  <span class="cyan">Crypto:</span>      <span class="white">BCrypt + AndroidX Security (EncryptedSharedPrefs)</span>
+  <span class="cyan">Security:</span>    <span class="white">ProGuard/R8 + HTTPS pinning + Firestore ACL</span>
+
+  <span class="green bold">Intelligence & IoT</span>
+  <span class="cyan">Sensors:</span>     <span class="white">Accelerometer + Microphone (ML confidence scoring)</span>
+  <span class="cyan">Health:</span>      <span class="white">Health Connect API (HR, HRV, SpO2, sleep stages)</span>
+  <span class="cyan">Smart Home:</span>  <span class="white">Home Assistant REST + Tuya Cloud (HMAC-SHA256)</span>
+  <span class="cyan">Network:</span>    <span class="white">Retrofit 2 + OkHttp + Moshi (interceptors, JSON)</span>
+
+  <span class="green bold">Infrastructure</span>
+  <span class="cyan">Cloud:</span>       <span class="white">Firebase Cloud Functions (Node.js) + FCM push</span>
+  <span class="cyan">Payments:</span>    <span class="white">Google Play Billing v7.1.1 (freemium subs)</span>
+  <span class="cyan">Analytics:</span>   <span class="white">Firebase Analytics + Crashlytics + Remote Config</span>
+  <span class="cyan">CI/CD:</span>       <span class="white">GitHub Actions + Gradle + Fastlane</span>
+  <span class="cyan">Testing:</span>     <span class="white">JUnit 5 + Mockito + Compose UI (137+ test cases)</span>
+  <span class="cyan">Quality:</span>     <span class="white">Ktlint + Detekt + SonarQube</span>
+  <span class="cyan">Nav:</span>         <span class="white">Jetpack Navigation + Deep Links (nooze:// scheme)</span>
 
   <span class="dim">Targeting a</span> <span class="green bold">$15B</span> <span class="dim">sleep tech market growing 15%/year.</span>
   <span class="dim">Freemium model · Premium at</span> <span class="cyan">€0.99/month</span>
