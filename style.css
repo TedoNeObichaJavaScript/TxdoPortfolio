@@ -1,0 +1,548 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green: #00ff41;
+  --green-dim: #00cc33;
+  --green-dark: #00801f;
+  --cyan: #00e5ff;
+  --cyan-dim: #00b8d4;
+  --purple: #bf00ff;
+  --red: #ff0040;
+  --yellow: #ffd600;
+  --orange: #ff9100;
+  --white: #e0e0e0;
+  --bg: #0a0a0a;
+  --bg-terminal: #0d0d0d;
+  --glow-green: 0 0 10px #00ff4180, 0 0 20px #00ff4140, 0 0 40px #00ff4120;
+  --glow-cyan: 0 0 10px #00e5ff80, 0 0 20px #00e5ff40, 0 0 40px #00e5ff20;
+  --font: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 14px;
+  overflow: hidden;
+  cursor: default;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--bg);
+}
+
+/* ===== MATRIX RAIN CANVAS ===== */
+#matrix-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* ===== CRT OVERLAY ===== */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.15) 1px,
+    rgba(0, 0, 0, 0.15) 2px
+  );
+  animation: scanline-move 8s linear infinite;
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 255, 65, 0.03) 50%,
+    transparent 100%
+  );
+  animation: scanline-sweep 4s ease-in-out infinite;
+}
+
+.flicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: flicker 0.15s infinite;
+  opacity: 0;
+}
+
+/* ===== BOOT SCREEN ===== */
+.boot-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 500;
+  background: var(--bg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px;
+  overflow: hidden;
+}
+
+#boot-log {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--green);
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-shadow: var(--glow-green);
+}
+
+#boot-log .cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
+#boot-log .red { color: var(--red); }
+#boot-log .yellow { color: var(--yellow); }
+#boot-log .dim { color: #555; text-shadow: none; }
+#boot-log .bold { font-weight: 700; }
+#boot-log .green { color: var(--green); }
+
+.boot-screen.fade-out {
+  animation: fadeOut 0.8s ease forwards;
+}
+
+/* ===== TERMINAL ===== */
+.terminal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(95vw, 900px);
+  height: min(90vh, 650px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #1a1a1a;
+  box-shadow:
+    0 0 0 1px #222,
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 100px rgba(0, 255, 65, 0.05),
+    inset 0 0 80px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  background: var(--bg-terminal);
+}
+
+.terminal.hidden {
+  display: none;
+}
+
+.terminal.show {
+  display: flex;
+  animation: terminalBoot 0.6s ease-out;
+}
+
+/* Terminal Header */
+.terminal-header {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 14px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.terminal-buttons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+
+.btn-close { background: #ff5f57; }
+.btn-minimize { background: #febc2e; }
+.btn-maximize { background: #28c840; }
+
+.terminal-title {
+  flex: 2;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.terminal-header-right {
+  flex: 1;
+}
+
+/* Terminal Body */
+.terminal-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.terminal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Output */
+#output {
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+#output .line {
+  margin-bottom: 2px;
+}
+
+#output .cmd-line {
+  color: var(--white);
+}
+
+#output .cmd-line .prompt-user { color: var(--cyan); text-shadow: var(--glow-cyan); }
+#output .cmd-line .prompt-at { color: #666; }
+#output .cmd-line .prompt-host { color: var(--green); text-shadow: var(--glow-green); }
+#output .cmd-line .prompt-colon { color: #666; }
+#output .cmd-line .prompt-path { color: var(--yellow); }
+#output .cmd-line .prompt-dollar { color: #888; }
+#output .cmd-line .typed-cmd { color: var(--white); }
+
+#output .response {
+  color: var(--green);
+  padding-left: 0;
+  margin-bottom: 8px;
+}
+
+#output .response .cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
+#output .response .green { color: var(--green); text-shadow: var(--glow-green); }
+#output .response .red { color: var(--red); }
+#output .response .yellow { color: var(--yellow); }
+#output .response .orange { color: var(--orange); }
+#output .response .purple { color: var(--purple); }
+#output .response .white { color: var(--white); }
+#output .response .dim { color: #555; text-shadow: none; }
+#output .response .bold { font-weight: 700; }
+#output .response .underline { text-decoration: underline; }
+
+#output .response a {
+  color: var(--cyan);
+  text-decoration: none;
+  text-shadow: var(--glow-cyan);
+  border-bottom: 1px dashed var(--cyan);
+  transition: all 0.2s;
+}
+
+#output .response a:hover {
+  color: #fff;
+  text-shadow: 0 0 15px var(--cyan);
+}
+
+/* ASCII art */
+#output .ascii-art {
+  line-height: 1.15;
+  font-size: 11px;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+/* Skill bars */
+.skill-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0;
+  font-size: 13px;
+}
+
+.skill-label {
+  min-width: 140px;
+  color: var(--white);
+}
+
+.skill-bar {
+  display: inline-block;
+  color: var(--green);
+  text-shadow: var(--glow-green);
+  letter-spacing: -1px;
+}
+
+.skill-bar.cyan {
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.skill-pct {
+  color: #888;
+  min-width: 40px;
+  text-align: right;
+  font-size: 12px;
+}
+
+/* Neofetch style */
+.neofetch {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.neofetch-ascii {
+  line-height: 1.15;
+  font-size: 10px;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  flex-shrink: 0;
+}
+
+.neofetch-info {
+  line-height: 1.7;
+}
+
+.neofetch-info .label {
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  font-weight: 700;
+}
+
+.neofetch-info .value {
+  color: var(--white);
+}
+
+.neofetch-separator {
+  color: #333;
+  margin: 4px 0;
+}
+
+.color-blocks {
+  display: flex;
+  gap: 0;
+  margin-top: 6px;
+}
+
+.color-block {
+  width: 24px;
+  height: 14px;
+  display: inline-block;
+}
+
+/* Input Line */
+.input-line {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 4px;
+  position: relative;
+}
+
+.prompt {
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.prompt-user { color: var(--cyan); text-shadow: var(--glow-cyan); }
+.prompt-at { color: #666; }
+.prompt-host { color: var(--green); text-shadow: var(--glow-green); }
+.prompt-colon { color: #666; }
+.prompt-path { color: var(--yellow); }
+.prompt-dollar { color: #888; margin-left: 4px; }
+
+#command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 14px;
+  caret-color: transparent;
+  line-height: 1.6;
+}
+
+.cursor-block {
+  color: var(--green);
+  animation: blink 1s step-end infinite;
+  font-size: 14px;
+  position: absolute;
+  pointer-events: none;
+  text-shadow: var(--glow-green);
+}
+
+/* Project cards in terminal */
+.project-item {
+  border: 1px solid #2a2a2a;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-left: 3px solid var(--cyan);
+  background: rgba(0, 229, 255, 0.03);
+}
+
+.project-item:hover {
+  border-left-color: var(--green);
+  background: rgba(0, 255, 65, 0.03);
+}
+
+/* Tab completion hint */
+.tab-hint {
+  color: #333;
+  font-style: italic;
+}
+
+/* Typing animation for responses */
+.typing-cursor::after {
+  content: '█';
+  animation: blink 0.7s step-end infinite;
+  color: var(--green);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scanline-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
+@keyframes scanline-sweep {
+  0%, 100% { transform: translateY(-100%); }
+  50% { transform: translateY(100%); }
+}
+
+@keyframes flicker {
+  0% { opacity: 0; }
+  5% { opacity: 0.05; }
+  10% { opacity: 0; }
+  15% { opacity: 0.08; }
+  20% { opacity: 0; }
+  50% { opacity: 0; }
+  55% { opacity: 0.03; }
+  60% { opacity: 0; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes terminalBoot {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scaleY(0.01);
+    filter: brightness(3);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scaleY(0.01);
+    filter: brightness(3);
+  }
+  60% {
+    transform: translate(-50%, -50%) scaleY(1.02);
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .terminal {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    transform: none;
+    border-radius: 0;
+    border: none;
+  }
+
+  .terminal-body {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .neofetch {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .neofetch-ascii {
+    font-size: 7px;
+  }
+
+  .skill-label {
+    min-width: 100px;
+    font-size: 11px;
+  }
+
+  #boot-log {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .boot-screen {
+    padding: 20px;
+  }
+}
