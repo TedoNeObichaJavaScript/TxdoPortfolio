@@ -207,7 +207,7 @@ function escapeHtml(str) {
 // ─── Tab completion ─────────────────────────────────────────
 const allCommands = ['help', 'about', 'skills', 'projects', 'contact', 'neofetch', 'whoami',
   'clear', 'history', 'ls', 'cat', 'pwd', 'date', 'uptime', 'sudo', 'exit',
-  'education', 'experience', 'socials', 'echo', 'banner', 'tree', 'matrix', 'gui'];
+  'education', 'experience', 'socials', 'echo', 'banner', 'tree', 'matrix', 'gui', 'nooze'];
 
 function tabComplete() {
   const val = commandInput.value;
@@ -254,6 +254,7 @@ function processCommand(cmd) {
     case 'tree': cmdTree(); break;
     case 'matrix': cmdMatrix(); break;
     case 'gui': cmdGui(); break;
+    case 'nooze': cmdNooze(); break;
     case 'cd': addResponse(`<span class="dim">There's no escaping this terminal.</span>`); break;
     case 'rm': addResponse(`<span class="red">Nice try. Permission denied: you can't delete my portfolio.</span>`); break;
     case 'vim': case 'nano': case 'vi': addResponse(`<span class="yellow">This isn't that kind of terminal. But I respect the reflex.</span>`); break;
@@ -292,11 +293,12 @@ function cmdHelp() {
 <span class="cyan bold">║</span>  <span class="green bold">AVAILABLE COMMANDS</span>                                  <span class="cyan bold">║</span>
 <span class="cyan bold">╠══════════════════════════════════════════════════════╣</span>
 <span class="cyan bold">║</span>                                                      <span class="cyan bold">║</span>
-<span class="cyan bold">║</span>  <span class="cyan">about</span>      <span class="dim">→</span> Who is Txdo?                           <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="cyan">about</span>      <span class="dim">→</span> Classified dossier (FBI-style)         <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">skills</span>     <span class="dim">→</span> Technical skill bars                   <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">projects</span>   <span class="dim">→</span> Featured projects & repos              <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="cyan">nooze</span>      <span class="dim">→</span> Deep dive into my biggest project      <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">experience</span> <span class="dim">→</span> Work experience                        <span class="cyan bold">║</span>
-<span class="cyan bold">║</span>  <span class="cyan">education</span>  <span class="dim">→</span> Education background                   <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="cyan">education</span>  <span class="dim">→</span> Education & certificates               <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">contact</span>    <span class="dim">→</span> How to reach me                        <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">neofetch</span>   <span class="dim">→</span> System info (the cool way)             <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">whoami</span>     <span class="dim">→</span> Quick intro                            <span class="cyan bold">║</span>
@@ -317,25 +319,71 @@ function cmdHelp() {
 
 function cmdAbout() {
   addResponse(`
-<span class="cyan bold">┌─ ABOUT ─────────────────────────────────────────────┐</span>
+<span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="red bold">║</span>  <span class="red bold">█▓▒░ CLASSIFIED DOSSIER ░▒▓█</span>         <span class="dim">CLEARANCE: LEVEL 5</span>  <span class="red bold">║</span>
+<span class="red bold">╠══════════════════════════════════════════════════════════════╣</span>
+<span class="red bold">║</span>  <span class="dim">FILE#: 0x7846-TXDO</span>            <span class="dim">STATUS:</span> <span class="green bold">ACTIVE THREAT</span>       <span class="red bold">║</span>
+<span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>
 
-  <span class="green bold">Tedo "Txdo"</span> <span class="dim">·</span> <span class="white">19 y/o Full-Stack Developer</span>
-  <span class="dim">📍</span> <span class="white">Sofia, Bulgaria</span>
+<div class="neofetch" style="gap:20px;align-items:flex-start;">
+  <div style="flex-shrink:0;text-align:center;">
+    <img src="az.webp" alt="TXDO" style="width:120px;height:120px;border-radius:6px;border:2px solid #00e5ff;box-shadow:0 0 15px #00e5ff40;object-fit:cover;">
+    <div style="margin-top:6px;"><span class="cyan bold">[ PHOTO ID ]</span></div>
+  </div>
+  <div style="line-height:1.8;">
+    <span class="cyan bold">SUBJECT:</span>     <span class="white bold">Teodor "Txdo" Mirchev</span>
+    <span class="cyan bold">ALIAS:</span>       <span class="green bold">TedoNeObichaJavaScript</span>
+    <span class="cyan bold">AGE:</span>         <span class="white">19</span> <span class="dim">(est. 2007, origin: Karnobat, BG)</span>
+    <span class="cyan bold">LOCATION:</span>    <span class="white">Sofia, Bulgaria</span> <span class="dim">(UTC+3)</span>
+    <span class="cyan bold">CLASS:</span>       <span class="yellow bold">Full-Stack Software Engineer</span>
+    <span class="cyan bold">THREAT LVL:</span>  <span class="red bold">██████████</span> <span class="red">MAXIMUM</span>
+  </div>
+</div>
 
-  Passionate developer who builds scalable, modern
-  applications. Fast learner driven by curiosity and
-  the desire to create things that actually matter.
+<span class="yellow bold">━━━ BACKGROUND ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
-  <span class="cyan bold">Currently:</span>
-  <span class="white">→ Founder & Lead Dev at</span> <span class="green bold">Nooze</span> <span class="dim">(noozealarm.com)</span>
-  <span class="white">→ Building reactive state management (Pulse)</span>
-  <span class="white">→ Creating educational coding games (Sudo Quest)</span>
+  <span class="dim">Subject first made contact with a keyboard at an unverified
+  age. By 17, had already shipped production systems. Relocated
+  from Karnobat to Sofia for higher education — a cover story.
+  Real mission: infiltrate the tech scene.</span>
 
-  <span class="cyan bold">Philosophy:</span>
-  <span class="dim italic">"Ship fast, learn faster, break things, fix them,
-   then build something even better."</span>
+  <span class="dim">Currently enrolled at</span> <span class="cyan">UNIBIT</span> <span class="dim">(Computer Science) and</span> <span class="cyan">SoftUni</span>
+  <span class="dim">(Software Engineering — JS & Node.js track). Holds a</span>
+  <span class="cyan">Cybersecurity Certificate</span> <span class="dim">from the Erasmus Program, a</span>
+  <span class="cyan">Cambridge C1 Advanced English</span> <span class="dim">clearance, and multiple SoftUni
+  certifications in JavaScript.</span>
 
-<span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
+<span class="yellow bold">━━━ MOST NOTORIOUS OPERATION ━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="green bold">OPERATION: NOOZE</span> <span class="dim">// codename: "Kill the Snooze Button"</span>
+  <span class="white">Cross-platform sleep intelligence app that tracks your brain,</span>
+  <span class="white">controls your lights, challenges you to prove you're awake,</span>
+  <span class="white">and turns mornings into a competitive sport.</span>
+  <span class="dim">Stack: Kotlin · Swift · Kotlin MP · React Native · Firestore</span>
+  <span class="dim">SQLCipher · BCrypt · Multi-Sensor Fusion · IoT (4 protocols)</span>
+  <span class="dim">Presented at</span> <span class="cyan">RoboDays '26</span> <span class="dim">· Targeting a $15B sleep tech market</span>
+  <span class="red dim">Subject built the entire system solo in 1 year. Age: 18-19.</span>
+
+<span class="yellow bold">━━━ KNOWN ASSOCIATES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="cyan">Pulse</span>        <span class="dim">→ Reactive state management framework (TypeScript)</span>
+  <span class="cyan">Sudo Quest</span>   <span class="dim">→ Browser coding game teaching JS, Git, HTML, C#</span>
+  <span class="cyan">Fraud Shield</span> <span class="dim">→ Invoice fraud detection microservices backend</span>
+  <span class="cyan">Treasurer</span>    <span class="dim">→ AI-integrated enterprise file manager (C#)</span>
+
+<span class="yellow bold">━━━ ASSESSMENT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="red bold">⚠ WARNING:</span> <span class="white">Subject is self-taught, dangerously curious,
+  and ships code at an alarming velocity. Known to mass-produce
+  side projects. Mass-consumes caffeine. Does not sleep — ironic,
+  given he built a sleep app.</span>
+
+  <span class="dim italic">"He didn't choose the terminal life. The terminal life chose him."</span>
+
+<span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="red bold">║</span>  <span class="dim">END OF FILE — AUTHORIZED PERSONNEL ONLY</span>                    <span class="red bold">║</span>
+<span class="red bold">║</span>  <span class="dim">Run</span> <span class="cyan">'contact'</span> <span class="dim">to initiate communication protocol</span>             <span class="red bold">║</span>
+<span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>`);
 }
 
 function skillBar(name, pct, color = '') {
@@ -353,32 +401,42 @@ function cmdSkills() {
   <span class="green bold">⟩ Languages</span>
 ${skillBar('JavaScript', 95, 'cyan')}
 ${skillBar('TypeScript', 90, 'cyan')}
+${skillBar('Kotlin', 85, 'cyan')}
+${skillBar('Swift', 75)}
 ${skillBar('Java', 75)}
-${skillBar('Python', 70)}
-${skillBar('C#', 65)}
-${skillBar('Haskell', 45)}
+${skillBar('C#', 70)}
 ${skillBar('HTML/CSS', 95, 'cyan')}
 
-  <span class="green bold">⟩ Frameworks & Libraries</span>
+  <span class="green bold">⟩ Frontend</span>
 ${skillBar('React', 90, 'cyan')}
-${skillBar('React Native', 80, 'cyan')}
-${skillBar('Node.js', 85, 'cyan')}
-${skillBar('Spring Boot', 60)}
+${skillBar('React Native', 85, 'cyan')}
 ${skillBar('Tailwind CSS', 85, 'cyan')}
 ${skillBar('Bootstrap', 80, 'cyan')}
 
+  <span class="green bold">⟩ Backend & Runtime</span>
+${skillBar('Node.js', 85, 'cyan')}
+${skillBar('Spring Boot', 60)}
+${skillBar('.NET', 55)}
+${skillBar('Nginx', 65)}
+
+  <span class="green bold">⟩ Mobile & Cross-Platform</span>
+${skillBar('Kotlin MP', 80, 'cyan')}
+${skillBar('Android Native', 75)}
+${skillBar('iOS (Swift)', 70)}
+
   <span class="green bold">⟩ Databases & Infra</span>
 ${skillBar('PostgreSQL', 80, 'cyan')}
+${skillBar('Firestore', 80, 'cyan')}
 ${skillBar('MySQL', 70)}
 ${skillBar('Redis', 65)}
+${skillBar('SQLCipher', 70)}
 ${skillBar('Docker', 70)}
-${skillBar('Nginx', 60)}
 
   <span class="green bold">⟩ Tools & Other</span>
 ${skillBar('Git', 90, 'cyan')}
 ${skillBar('Figma', 70)}
-${skillBar('Arduino', 55)}
-${skillBar('Android', 60)}
+${skillBar('Home Assistant', 65)}
+${skillBar('Arduino / IoT', 60)}
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -389,25 +447,47 @@ function cmdProjects() {
 
 <div class="project-item">
   <span class="cyan bold">🚀 Nooze</span> <span class="dim">— noozealarm.com</span>
-  <span class="white">My biggest project. A modern alarm/notification
-  platform. Built with love and sleepless nights.</span>
-  <span class="dim">Founder & Lead Developer</span>
-  <span class="green">▸ Full-Stack</span> <span class="dim">·</span> <span class="yellow">React Native · Node.js · PostgreSQL</span>
+  <span class="white">Cross-platform sleep intelligence app. Kills the
+  snooze button with Smart Wake (sleep phase detection),
+  Wake Challenges (math, QR, object recognition), and
+  competitive gamification (XP, streaks, Wake Duels).
+  IoT sunrise simulation via Home Assistant/Tuya/Tellur.</span>
+  <span class="dim">Founder & Solo Developer · 1 year · Presented at RoboDays '26</span>
+  <span class="green">▸ Mobile + Backend + IoT</span>
+  <span class="yellow">Kotlin · Swift · Kotlin MP · React Native · Firestore
+  SQLCipher · BCrypt · Health Connect · Multi-Sensor Fusion</span>
 </div>
 
 <div class="project-item">
   <span class="cyan bold">⚡ Pulse</span> <span class="dim">— github.com/TedoNeObichaJavaScript/pulse</span>
-  <span class="white">Powerful, lightweight reactive state management
-  framework with automatic dependency tracking.</span>
-  <span class="green">★ 5 stars</span> <span class="dim">·</span> <span class="yellow">TypeScript</span>
+  <span class="white">Lightweight reactive state management library
+  with automatic dependency tracking and predictable
+  state updates. Built for React applications.</span>
+  <span class="green">★ Stars</span> <span class="dim">·</span> <span class="yellow">TypeScript</span>
 </div>
 
 <div class="project-item">
   <span class="cyan bold">🎮 Sudo Quest</span> <span class="dim">— github.com/TedoNeObichaJavaScript/Sudo-Quest</span>
   <span class="white">Browser-based interactive coding game. Learn
   JavaScript, Git, Terminal, HTML, CSS, and C#
-  by actually doing challenges.</span>
+  through hands-on challenges.</span>
   <span class="green">▸ Educational</span> <span class="dim">·</span> <span class="yellow">JavaScript</span>
+</div>
+
+<div class="project-item">
+  <span class="cyan bold">🛡 Instant Invoice Fraud Shield</span>
+  <span class="white">Backend microservices system for invoice validation
+  and fraud-risk analysis. Business rules, data
+  validation, and scalable service design.</span>
+  <span class="green">▸ Backend</span> <span class="dim">·</span> <span class="yellow">Microservices Architecture</span>
+</div>
+
+<div class="project-item">
+  <span class="cyan bold">📂 Treasurer</span>
+  <span class="white">Enterprise-level AI-integrated file management system.
+  Intelligent categorization, search assistance, and
+  context-aware recommendations.</span>
+  <span class="green">▸ Desktop</span> <span class="dim">·</span> <span class="yellow">C# · AI/ML</span>
 </div>
 
   <span class="dim">Run</span> <span class="cyan">'cat projects.json'</span> <span class="dim">for raw data.</span>
@@ -422,7 +502,7 @@ function cmdContact() {
   <span class="green bold">⟩ Connect with me</span>
 
   <span class="cyan">GitHub</span>     <span class="dim">→</span>  <a href="https://github.com/TedoNeObichaJavaScript" target="_blank">github.com/TedoNeObichaJavaScript</a>
-  <span class="cyan">LinkedIn</span>   <span class="dim">→</span>  <a href="https://linkedin.com/in/teodor-mirchev-91115a305" target="_blank">in/teodor-mirchev-91115a305</a>
+  <span class="cyan">LinkedIn</span>   <span class="dim">→</span>  <a href="https://www.linkedin.com/in/teodormirchev" target="_blank">in/teodormirchev</a>
   <span class="cyan">Instagram</span>  <span class="dim">→</span>  <a href="https://instagram.com/t.db3" target="_blank">@t.db3</a>
   <span class="cyan">Website</span>    <span class="dim">→</span>  <a href="https://noozealarm.com" target="_blank">noozealarm.com</a>
 
@@ -454,7 +534,7 @@ function cmdNeofetch() {
     <span class="label">Location:</span> <span class="value">Sofia, Bulgaria (UTC+3)</span>
     <span class="label">Kernel:</span> <span class="value">Full-Stack v6.4.2-NOOZE</span>
     <span class="label">Uptime:</span> <span class="value">19 years, always coding</span>
-    <span class="label">Packages:</span> <span class="value">React, Node, TS, Java, Python, C#, Haskell</span>
+    <span class="label">Packages:</span> <span class="value">JS, TS, Kotlin, Swift, React, Node, C#, Java</span>
     <span class="label">Shell:</span> <span class="value">txdo-sh 2.0 (interactive)</span>
     <span class="label">Resolution:</span> <span class="value">Pixel perfect</span>
     <span class="label">DE:</span> <span class="value">Terminal-only (GUI is overrated)</span>
@@ -478,9 +558,11 @@ function cmdNeofetch() {
 }
 
 function cmdWhoami() {
-  addResponse(`<span class="cyan bold">Tedo "Txdo"</span> <span class="dim">—</span> <span class="white">19yo Full-Stack Developer & Founder of Nooze</span>
-<span class="dim">Sofia, Bulgaria · Builds things that matter · Ships fast</span>
-<span class="green">Currently:</span> <span class="white">Working on Nooze, Pulse, and Sudo Quest</span>`);
+  addResponse(`<span class="cyan bold">Tedo "Txdo" Mirchev</span> <span class="dim">—</span> <span class="white">19yo Full-Stack Software Engineer</span>
+<span class="dim">Sofia, Bulgaria · UNIBIT CS · SoftUni JS/Node.js · Cambridge C1</span>
+<span class="green">Founder:</span> <span class="white">Nooze (noozealarm.com) — cross-platform sleep intelligence</span>
+<span class="green">Stack:</span> <span class="white">JS/TS · Kotlin · Swift · React · Node.js · PostgreSQL · Docker</span>
+<span class="dim">Run</span> <span class="cyan">'about'</span> <span class="dim">for the full classified dossier.</span>`);
 }
 
 function cmdHistory() {
@@ -504,25 +586,28 @@ function cmdCat(args) {
   const files = {
     'about.txt': () => cmdAbout(),
     'skills.json': () => addResponse(`<span class="yellow">{</span>
-  <span class="cyan">"languages"</span>: <span class="yellow">[</span><span class="green">"JavaScript"</span>, <span class="green">"TypeScript"</span>, <span class="green">"Java"</span>, <span class="green">"Python"</span>, <span class="green">"C#"</span>, <span class="green">"Haskell"</span><span class="yellow">]</span>,
-  <span class="cyan">"frontend"</span>: <span class="yellow">[</span><span class="green">"React"</span>, <span class="green">"React Native"</span>, <span class="green">"Tailwind"</span>, <span class="green">"Bootstrap"</span>, <span class="green">"HTML5"</span>, <span class="green">"CSS3"</span><span class="yellow">]</span>,
-  <span class="cyan">"backend"</span>: <span class="yellow">[</span><span class="green">"Node.js"</span>, <span class="green">"Spring Boot"</span>, <span class="green">"Nginx"</span><span class="yellow">]</span>,
-  <span class="cyan">"databases"</span>: <span class="yellow">[</span><span class="green">"PostgreSQL"</span>, <span class="green">"MySQL"</span>, <span class="green">"Redis"</span><span class="yellow">]</span>,
+  <span class="cyan">"languages"</span>: <span class="yellow">[</span><span class="green">"JavaScript"</span>, <span class="green">"TypeScript"</span>, <span class="green">"Kotlin"</span>, <span class="green">"Swift"</span>, <span class="green">"Java"</span>, <span class="green">"C#"</span><span class="yellow">]</span>,
+  <span class="cyan">"frontend"</span>: <span class="yellow">[</span><span class="green">"React"</span>, <span class="green">"React Native"</span>, <span class="green">"Tailwind"</span>, <span class="green">"Bootstrap"</span><span class="yellow">]</span>,
+  <span class="cyan">"backend"</span>: <span class="yellow">[</span><span class="green">"Node.js"</span>, <span class="green">"Spring Boot"</span>, <span class="green">".NET"</span>, <span class="green">"Nginx"</span><span class="yellow">]</span>,
+  <span class="cyan">"mobile"</span>: <span class="yellow">[</span><span class="green">"Kotlin MP"</span>, <span class="green">"Android Native"</span>, <span class="green">"iOS (Swift)"</span>, <span class="green">"React Native"</span><span class="yellow">]</span>,
+  <span class="cyan">"databases"</span>: <span class="yellow">[</span><span class="green">"PostgreSQL"</span>, <span class="green">"Firestore"</span>, <span class="green">"MySQL"</span>, <span class="green">"Redis"</span>, <span class="green">"SQLCipher"</span><span class="yellow">]</span>,
   <span class="cyan">"devops"</span>: <span class="yellow">[</span><span class="green">"Docker"</span>, <span class="green">"Git"</span>, <span class="green">"Nginx"</span><span class="yellow">]</span>,
-  <span class="cyan">"other"</span>: <span class="yellow">[</span><span class="green">"Figma"</span>, <span class="green">"Arduino"</span>, <span class="green">"Android"</span><span class="yellow">]</span>
+  <span class="cyan">"iot"</span>: <span class="yellow">[</span><span class="green">"Home Assistant"</span>, <span class="green">"Tuya Cloud"</span>, <span class="green">"Tellur"</span>, <span class="green">"Arduino"</span><span class="yellow">]</span>,
+  <span class="cyan">"other"</span>: <span class="yellow">[</span><span class="green">"Figma"</span>, <span class="green">"Microservices"</span>, <span class="green">"Reactive State Mgmt"</span><span class="yellow">]</span>
 <span class="yellow">}</span>`),
     'projects.json': () => addResponse(`<span class="yellow">[</span>
   <span class="yellow">{</span>
     <span class="cyan">"name"</span>: <span class="green">"Nooze"</span>,
     <span class="cyan">"url"</span>: <span class="green">"noozealarm.com"</span>,
-    <span class="cyan">"role"</span>: <span class="green">"Founder & Lead Developer"</span>,
-    <span class="cyan">"stack"</span>: <span class="yellow">[</span><span class="green">"React Native"</span>, <span class="green">"Node.js"</span>, <span class="green">"PostgreSQL"</span><span class="yellow">]</span>
+    <span class="cyan">"role"</span>: <span class="green">"Founder & Solo Developer"</span>,
+    <span class="cyan">"started"</span>: <span class="green">"2025-04"</span>,
+    <span class="cyan">"stack"</span>: <span class="yellow">[</span><span class="green">"Kotlin"</span>, <span class="green">"Swift"</span>, <span class="green">"Kotlin MP"</span>, <span class="green">"React Native"</span>, <span class="green">"Firestore"</span>, <span class="green">"SQLCipher"</span><span class="yellow">]</span>,
+    <span class="cyan">"features"</span>: <span class="yellow">[</span><span class="green">"Smart Wake"</span>, <span class="green">"Wake Challenges"</span>, <span class="green">"Gamification"</span>, <span class="green">"IoT"</span><span class="yellow">]</span>
   <span class="yellow">}</span>,
   <span class="yellow">{</span>
     <span class="cyan">"name"</span>: <span class="green">"Pulse"</span>,
     <span class="cyan">"url"</span>: <span class="green">"github.com/TedoNeObichaJavaScript/pulse"</span>,
-    <span class="cyan">"desc"</span>: <span class="green">"Reactive state management framework"</span>,
-    <span class="cyan">"stars"</span>: <span class="purple">5</span>,
+    <span class="cyan">"desc"</span>: <span class="green">"Reactive state management library"</span>,
     <span class="cyan">"lang"</span>: <span class="green">"TypeScript"</span>
   <span class="yellow">}</span>,
   <span class="yellow">{</span>
@@ -530,6 +615,16 @@ function cmdCat(args) {
     <span class="cyan">"url"</span>: <span class="green">"github.com/TedoNeObichaJavaScript/Sudo-Quest"</span>,
     <span class="cyan">"desc"</span>: <span class="green">"Interactive coding game"</span>,
     <span class="cyan">"lang"</span>: <span class="green">"JavaScript"</span>
+  <span class="yellow">}</span>,
+  <span class="yellow">{</span>
+    <span class="cyan">"name"</span>: <span class="green">"Instant Invoice Fraud Shield"</span>,
+    <span class="cyan">"desc"</span>: <span class="green">"Invoice fraud detection microservices"</span>,
+    <span class="cyan">"arch"</span>: <span class="green">"Microservices"</span>
+  <span class="yellow">}</span>,
+  <span class="yellow">{</span>
+    <span class="cyan">"name"</span>: <span class="green">"Treasurer"</span>,
+    <span class="cyan">"desc"</span>: <span class="green">"AI-integrated enterprise file manager"</span>,
+    <span class="cyan">"lang"</span>: <span class="green">"C#"</span>
   <span class="yellow">}</span>
 <span class="yellow">]</span>`),
     'contact.txt': () => cmdContact(),
@@ -611,18 +706,28 @@ function cmdEducation() {
   addResponse(`
 <span class="cyan bold">┌─ EDUCATION ─────────────────────────────────────────┐</span>
 
-  <span class="green bold">⟩ Self-Taught Developer</span>
-  <span class="white">The best education is building real things.</span>
-  <span class="dim">Started coding, never stopped.</span>
+  <span class="green bold">⟩ Computer Science</span>
+  <span class="cyan">UNIBIT</span> <span class="dim">— University of Library Studies & IT, Sofia</span>
+  <span class="dim">Currently studying</span>
 
-  <span class="green bold">⟩ Continuous Learning</span>
-  <span class="white">Currently deepening knowledge in:</span>
-  <span class="cyan">→</span> <span class="white">React & React Native ecosystem</span>
-  <span class="cyan">→</span> <span class="white">Node.js backend architecture</span>
-  <span class="cyan">→</span> <span class="white">Java & Spring Boot</span>
-  <span class="cyan">→</span> <span class="white">System design & scalability</span>
+  <span class="green bold">⟩ Software Engineering (JavaScript & Node.js)</span>
+  <span class="cyan">SoftUni</span> <span class="dim">— Software University</span>
+  <span class="dim">Currently studying</span>
 
-  <span class="dim">"Every repo is a classroom."</span>
+  <span class="green bold">⟩ Applied Programming</span>
+  <span class="dim">Professional Secondary Education — Burgas</span>
+
+  <span class="green bold">⟩ Natural Sciences</span>
+  <span class="dim">Secondary Education — Karnobat</span>
+
+<span class="cyan bold">┌─ CERTIFICATES ──────────────────────────────────────┐</span>
+
+  <span class="cyan">►</span> <span class="white">JavaScript Beginner & Fundamentals</span> <span class="dim">— SoftUni</span>
+  <span class="cyan">►</span> <span class="white">JavaScript Advanced</span> <span class="dim">— SoftUni (in progress)</span>
+  <span class="cyan">►</span> <span class="white">Software Engineering JS & Node.js</span> <span class="dim">— SoftUni (in progress)</span>
+  <span class="cyan">►</span> <span class="white">Cybersecurity Certificate</span> <span class="dim">— Erasmus Program</span>
+  <span class="cyan">►</span> <span class="white">C1 Advanced English</span> <span class="dim">— Cambridge</span>
+  <span class="cyan">►</span> <span class="white">B2 Upper-Intermediate English</span> <span class="dim">— Cambridge</span>
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -631,25 +736,38 @@ function cmdExperience() {
   addResponse(`
 <span class="cyan bold">┌─ EXPERIENCE ────────────────────────────────────────┐</span>
 
-  <span class="green bold">⟩ Founder & Lead Developer</span>
+  <span class="green bold">⟩ Founder & Solo Developer</span>
   <span class="cyan">Nooze</span> <span class="dim">· noozealarm.com</span>
-  <span class="dim">2024 → Present</span>
-  <span class="white">Building a modern alarm/notification platform
-  from the ground up. Handling everything from
-  mobile development to backend infrastructure.</span>
+  <span class="dim">Apr 2025 → Present</span>
+  <span class="white">Built an entire cross-platform sleep intelligence
+  app from scratch — solo. Engineered multi-sensor
+  sleep stage classification, bi-directional cloud
+  sync (Room + Firestore), IoT smart home integration
+  (4 protocols), gamification engine, and wake
+  challenge system with object recognition.</span>
+  <span class="yellow">Kotlin · Swift · Kotlin MP · React Native · Firestore</span>
 
   <span class="green bold">⟩ Open Source Creator</span>
-  <span class="cyan">Pulse</span> <span class="dim">· State Management Framework</span>
-  <span class="dim">2024 → Present</span>
-  <span class="white">Created a reactive state management library
-  for JS/TS with automatic dependency tracking.
-  5 stars and growing.</span>
+  <span class="cyan">Pulse</span> <span class="dim">· Reactive State Management</span>
+  <span class="dim">Nov 2025</span>
+  <span class="white">Designed a lightweight reactive state management
+  library for JavaScript with automatic dependency
+  tracking. Used in React-based applications.</span>
+  <span class="yellow">TypeScript</span>
 
-  <span class="green bold">⟩ Educational Content Creator</span>
-  <span class="cyan">Sudo Quest</span> <span class="dim">· Interactive Coding Game</span>
-  <span class="dim">2024 → Present</span>
-  <span class="white">Browser-based game teaching JS, Git, Terminal,
-  HTML, CSS, and C# through interactive challenges.</span>
+  <span class="green bold">⟩ Backend Engineer (Project)</span>
+  <span class="cyan">Instant Invoice Fraud Shield</span>
+  <span class="dim">Oct 2025</span>
+  <span class="white">Built a microservices backend for invoice validation
+  and fraud-risk analysis with scalable service design.</span>
+
+  <span class="green bold">⟩ Desktop Developer (Project)</span>
+  <span class="cyan">Treasurer</span> <span class="dim">· AI File Manager</span>
+  <span class="dim">Mar 2024</span>
+  <span class="white">Enterprise-level AI-integrated file management system
+  with intelligent categorization and context-aware
+  recommendations.</span>
+  <span class="yellow">C#</span>
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -726,6 +844,59 @@ function cmdCowsay(args) {
 <span class="white">            (__)\\       )\\/\\</span>
 <span class="white">                ||----w |</span>
 <span class="white">                ||     ||</span>`);
+}
+
+function cmdNooze() {
+  addResponse(`
+<span class="cyan bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="cyan bold">║</span>  <span class="green bold">NOOZE</span> <span class="dim">— Kill the Snooze Button</span>                             <span class="cyan bold">║</span>
+<span class="cyan bold">╠══════════════════════════════════════════════════════════════╣</span>
+<span class="cyan bold">║</span>  <span class="dim">noozealarm.com</span>           <span class="dim">Solo-built · Apr 2025 → Present</span>   <span class="cyan bold">║</span>
+<span class="cyan bold">╚══════════════════════════════════════════════════════════════╝</span>
+
+  <span class="white bold">The standard alarm was invented 200 years ago and hasn't
+  changed. Nooze is a cross-platform sleep intelligence app
+  that replaces the snooze button with science.</span>
+
+<span class="yellow bold">━━━ CORE FEATURES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="green bold">01. Smart Wake</span>
+  <span class="dim">Multi-sensor fusion engine classifies sleep phases in
+  real-time (accelerometer RMS + microphone dB analysis).
+  Opens a wake window and wakes you in light sleep.
+  Confidence scoring (0-1) with 0.60 threshold.</span>
+
+  <span class="green bold">02. Wake Challenges</span>
+  <span class="dim">Prove you're awake: solve math, scan a QR code in
+  another room, shake phone 30x, or use camera object
+  recognition ("Show me a coffee cup").</span>
+
+  <span class="green bold">03. Gamification</span>
+  <span class="dim">XP, levels, streaks, achievements, daily quests.
+  Wake Duels — challenge friends: who wakes faster?
+  Who has better sleep quality this week?</span>
+
+  <span class="green bold">04. IoT Smart Home</span>
+  <span class="dim">Sunrise simulation via real lights. Supports 4
+  protocols: Home Assistant, Tuya Cloud, Tellur,
+  and generic webhooks. Your home puts you to sleep
+  and wakes you up.</span>
+
+<span class="yellow bold">━━━ TECH STACK ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="cyan">Mobile:</span>      <span class="white">Kotlin · Swift · Kotlin Multiplatform · React Native</span>
+  <span class="cyan">Backend:</span>     <span class="white">Firestore (cloud) · Room (local) · bi-directional sync</span>
+  <span class="cyan">Security:</span>    <span class="white">SQLCipher encrypted DB · BCrypt · DAO-level access</span>
+  <span class="cyan">Sensors:</span>     <span class="white">Accelerometer · Microphone · Health Connect</span>
+  <span class="cyan">IoT:</span>         <span class="white">Home Assistant · Tuya · Tellur · Webhooks</span>
+  <span class="cyan">Sync:</span>        <span class="white">Offline queue · Automatic conflict resolution</span>
+
+  <span class="dim">Targeting a</span> <span class="green bold">$15B</span> <span class="dim">sleep tech market growing 15%/year.</span>
+  <span class="dim">Freemium model · Premium at</span> <span class="cyan">€0.99/month</span>
+  <span class="dim">Presented at</span> <span class="cyan bold">RoboDays '26</span>
+
+  <span class="dim italic">"We don't want to improve the alarm.
+   We want to improve the way you wake up."</span>`);
 }
 
 // ─── Init ───────────────────────────────────────────────────
