@@ -15,7 +15,7 @@
   --red: #ff0040;
   --yellow: #ffd600;
   --orange: #ff9100;
-  --white: #e0e0e0;
+  --white: #ececec;
   --bg: #0a0a0a;
   --bg-terminal: #0d0d0d;
   --glow-green: 0 0 10px #00ff4180, 0 0 20px #00ff4140, 0 0 40px #00ff4120;
@@ -131,7 +131,7 @@ html, body {
 #boot-log .cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
 #boot-log .red { color: var(--red); }
 #boot-log .yellow { color: var(--yellow); }
-#boot-log .dim { color: #555; text-shadow: none; }
+#boot-log .dim { color: #8a8a8a; text-shadow: none; }
 #boot-log .bold { font-weight: 700; }
 #boot-log .green { color: var(--green); }
 
@@ -271,7 +271,7 @@ html, body {
 #output .response .orange { color: var(--orange); }
 #output .response .purple { color: var(--purple); }
 #output .response .white { color: var(--white); }
-#output .response .dim { color: #555; text-shadow: none; }
+#output .response .dim { color: #999; text-shadow: none; }
 #output .response .bold { font-weight: 700; }
 #output .response .underline { text-decoration: underline; }
 
@@ -323,7 +323,7 @@ html, body {
 }
 
 .skill-pct {
-  color: #888;
+  color: #aaa;
   min-width: 40px;
   text-align: right;
   font-size: 12px;
@@ -359,7 +359,7 @@ html, body {
 }
 
 .neofetch-separator {
-  color: #333;
+  color: #555;
   margin: 4px 0;
 }
 
@@ -394,7 +394,7 @@ html, body {
 .prompt-host { color: var(--green); text-shadow: var(--glow-green); }
 .prompt-colon { color: #666; }
 .prompt-path { color: var(--yellow); }
-.prompt-dollar { color: #888; margin-left: 4px; }
+.prompt-dollar { color: #aaa; margin-left: 4px; }
 
 #command-input {
   flex: 1;
@@ -433,7 +433,7 @@ html, body {
 
 /* Tab completion hint */
 .tab-hint {
-  color: #333;
+  color: #777;
   font-style: italic;
 }
 

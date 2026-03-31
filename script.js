@@ -272,7 +272,7 @@ function processCommand(cmd) {
 // ─── Commands ───────────────────────────────────────────────
 
 function showWelcome() {
-  addResponse(`<span class="dim">Welcome to Txdo's portfolio terminal. Type</span> <span class="cyan">'help'</span> <span class="dim">to get started.</span>`);
+  addResponse(`<span class="white">Welcome to Txdo's portfolio terminal. Type</span> <span class="cyan">'help'</span> <span class="white">to get started.</span>`);
 }
 
 function showBanner() {
@@ -333,7 +333,7 @@ function cmdAbout() {
   <div style="line-height:1.8;">
     <span class="cyan bold">SUBJECT:</span>     <span class="white bold">Teodor "Txdo" Mirchev</span>
     <span class="cyan bold">ALIAS:</span>       <span class="green bold">TedoNeObichaJavaScript</span>
-    <span class="cyan bold">AGE:</span>         <span class="white">19</span> <span class="dim">(est. 2007, origin: Karnobat, BG)</span>
+    <span class="cyan bold">AGE:</span>         <span class="white">19</span> <span class="dim">(born 2006, Sofia, BG)</span>
     <span class="cyan bold">LOCATION:</span>    <span class="white">Sofia, Bulgaria</span> <span class="dim">(UTC+3)</span>
     <span class="cyan bold">CLASS:</span>       <span class="yellow bold">Full-Stack Software Engineer</span>
     <span class="cyan bold">THREAT LVL:</span>  <span class="red bold">██████████</span> <span class="red">MAXIMUM</span>
@@ -342,15 +342,15 @@ function cmdAbout() {
 
 <span class="yellow bold">━━━ BACKGROUND ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
-  <span class="dim">Subject first made contact with a keyboard at an unverified
-  age. By 17, had already shipped production systems. Relocated
-  from Karnobat to Sofia for higher education — a cover story.
-  Real mission: infiltrate the tech scene.</span>
+  <span class="white">Subject first made contact with a keyboard at an unverified
+  age. By 17, had already shipped production systems. Based in
+  Sofia — the epicenter of his operations. Cover story:
+  university student. Real mission: infiltrate the tech scene.</span>
 
-  <span class="dim">Currently enrolled at</span> <span class="cyan">UNIBIT</span> <span class="dim">(Computer Science) and</span> <span class="cyan">SoftUni</span>
-  <span class="dim">(Software Engineering — JS & Node.js track). Holds a</span>
-  <span class="cyan">Cybersecurity Certificate</span> <span class="dim">from the Erasmus Program, a</span>
-  <span class="cyan">Cambridge C1 Advanced English</span> <span class="dim">clearance, and multiple SoftUni
+  <span class="white">Currently enrolled at</span> <span class="cyan">UNIBIT</span> <span class="white">(Computer Science) and</span> <span class="cyan">SoftUni</span>
+  <span class="white">(Software Engineering — JS & Node.js track). Holds a</span>
+  <span class="cyan">Cybersecurity Certificate</span> <span class="white">from the Erasmus Program, a</span>
+  <span class="cyan">Cambridge C1 Advanced English</span> <span class="white">clearance, and multiple SoftUni
   certifications in JavaScript.</span>
 
 <span class="yellow bold">━━━ MOST NOTORIOUS OPERATION ━━━━━━━━━━━━━━━━━━━━━━━━━</span>
@@ -359,18 +359,18 @@ function cmdAbout() {
   <span class="white">Cross-platform sleep intelligence app that tracks your brain,</span>
   <span class="white">controls your lights, challenges you to prove you're awake,</span>
   <span class="white">and turns mornings into a competitive sport.</span>
-  <span class="dim">Stack: Kotlin 1.9 · Jetpack Compose · MVVM/Clean Arch · Hilt</span>
-  <span class="dim">Room+SQLCipher · Firestore · Firebase Auth · FCM · Retrofit</span>
-  <span class="dim">Health Connect · ML Sensor Fusion · IoT · 137+ test cases</span>
-  <span class="dim">Presented at</span> <span class="cyan">RoboDays '26</span> <span class="dim">· Targeting a $15B sleep tech market</span>
-  <span class="red dim">Subject built the entire system solo in 1 year. Age: 18-19.</span>
+  <span class="yellow">Stack: Kotlin 1.9 · Jetpack Compose · MVVM/Clean Arch · Hilt</span>
+  <span class="yellow">Room+SQLCipher · Firestore · Firebase Auth · FCM · Retrofit</span>
+  <span class="yellow">Health Connect · ML Sensor Fusion · IoT · 137+ test cases</span>
+  <span class="white">Presented at</span> <span class="cyan">RoboDays '26</span> <span class="white">· Targeting a $15B sleep tech market</span>
+  <span class="red bold">Subject built the entire system solo in 1 year. Age: 18-19.</span>
 
 <span class="yellow bold">━━━ KNOWN ASSOCIATES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
-  <span class="cyan">Pulse</span>        <span class="dim">→ Reactive state management framework (TypeScript)</span>
-  <span class="cyan">Sudo Quest</span>   <span class="dim">→ Browser coding game teaching JS, Git, HTML, C#</span>
-  <span class="cyan">Fraud Shield</span> <span class="dim">→ Invoice fraud detection microservices backend</span>
-  <span class="cyan">Treasurer</span>    <span class="dim">→ AI-integrated enterprise file manager (C#)</span>
+  <span class="cyan">Pulse</span>        <span class="white">→ Reactive state management framework (TypeScript)</span>
+  <span class="cyan">Sudo Quest</span>   <span class="white">→ Browser coding game teaching JS, Git, HTML, C#</span>
+  <span class="cyan">Fraud Shield</span> <span class="white">→ Invoice fraud detection microservices backend</span>
+  <span class="cyan">Treasurer</span>    <span class="white">→ AI-integrated enterprise file manager (C#)</span>
 
 <span class="yellow bold">━━━ ASSESSMENT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
@@ -379,7 +379,7 @@ function cmdAbout() {
   side projects. Mass-consumes caffeine. Does not sleep — ironic,
   given he built a sleep app.</span>
 
-  <span class="dim italic">"He didn't choose the terminal life. The terminal life chose him."</span>
+  <span class="green italic">"He didn't choose the terminal life. The terminal life chose him."</span>
 
 <span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
 <span class="red bold">║</span>  <span class="dim">END OF FILE — AUTHORIZED PERSONNEL ONLY</span>                    <span class="red bold">║</span>
@@ -453,7 +453,7 @@ function cmdProjects() {
   Wake Challenges (math, QR, object recognition), and
   competitive gamification (XP, streaks, Wake Duels).
   IoT sunrise simulation via Home Assistant/Tuya/Tellur.</span>
-  <span class="dim">Founder & Solo Developer · 1 year · Presented at RoboDays '26</span>
+  <span class="white">Founder & Solo Developer · 1 year · Presented at RoboDays '26</span>
   <span class="green">▸ Mobile + Backend + IoT + ML</span>
   <span class="yellow">Kotlin · Jetpack Compose · MVVM · Hilt · Room · SQLCipher
   Firestore · Firebase Auth · FCM · Retrofit · OkHttp
@@ -508,7 +508,7 @@ function cmdContact() {
   <span class="cyan">Instagram</span>  <span class="dim">→</span>  <a href="https://instagram.com/t.db3" target="_blank">@t.db3</a>
   <span class="cyan">Website</span>    <span class="dim">→</span>  <a href="https://noozealarm.com" target="_blank">noozealarm.com</a>
 
-  <span class="dim">Always open to collaborations and cool projects.</span>
+  <span class="white">Always open to collaborations and cool projects.</span>
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -525,7 +525,7 @@ function cmdNeofetch() {
         ╚═╝   ╚═╝ ╚╝╚═╝
    ┌──────────────────┐
    │  <span class="green">TXDO.DEV</span>        │
-   │  <span class="dim">est. 2007</span>       │
+   │  <span class="dim">est. 2006</span>       │
    └──────────────────┘
   </pre>
   <div class="neofetch-info">
@@ -561,7 +561,7 @@ function cmdNeofetch() {
 
 function cmdWhoami() {
   addResponse(`<span class="cyan bold">Tedo "Txdo" Mirchev</span> <span class="dim">—</span> <span class="white">19yo Full-Stack Software Engineer</span>
-<span class="dim">Sofia, Bulgaria · UNIBIT CS · SoftUni JS/Node.js · Cambridge C1</span>
+<span class="white">Sofia, Bulgaria · UNIBIT CS · SoftUni JS/Node.js · Cambridge C1</span>
 <span class="green">Founder:</span> <span class="white">Nooze (noozealarm.com) — cross-platform sleep intelligence</span>
 <span class="green">Stack:</span> <span class="white">JS/TS · Kotlin · Swift · React · Node.js · PostgreSQL · Docker</span>
 <span class="dim">Run</span> <span class="cyan">'about'</span> <span class="dim">for the full classified dossier.</span>`);
@@ -709,27 +709,27 @@ function cmdEducation() {
 <span class="cyan bold">┌─ EDUCATION ─────────────────────────────────────────┐</span>
 
   <span class="green bold">⟩ Computer Science</span>
-  <span class="cyan">UNIBIT</span> <span class="dim">— University of Library Studies & IT, Sofia</span>
+  <span class="cyan">UNIBIT</span> <span class="white">— University of Library Studies & IT, Sofia</span>
   <span class="dim">Currently studying</span>
 
   <span class="green bold">⟩ Software Engineering (JavaScript & Node.js)</span>
-  <span class="cyan">SoftUni</span> <span class="dim">— Software University</span>
+  <span class="cyan">SoftUni</span> <span class="white">— Software University</span>
   <span class="dim">Currently studying</span>
 
   <span class="green bold">⟩ Applied Programming</span>
-  <span class="dim">Professional Secondary Education — Burgas</span>
+  <span class="white">Professional Secondary Education — Sofia</span>
 
   <span class="green bold">⟩ Natural Sciences</span>
-  <span class="dim">Secondary Education — Karnobat</span>
+  <span class="white">Secondary Education — Sofia</span>
 
 <span class="cyan bold">┌─ CERTIFICATES ──────────────────────────────────────┐</span>
 
-  <span class="cyan">►</span> <span class="white">JavaScript Beginner & Fundamentals</span> <span class="dim">— SoftUni</span>
-  <span class="cyan">►</span> <span class="white">JavaScript Advanced</span> <span class="dim">— SoftUni (in progress)</span>
-  <span class="cyan">►</span> <span class="white">Software Engineering JS & Node.js</span> <span class="dim">— SoftUni (in progress)</span>
-  <span class="cyan">►</span> <span class="white">Cybersecurity Certificate</span> <span class="dim">— Erasmus Program</span>
-  <span class="cyan">►</span> <span class="white">C1 Advanced English</span> <span class="dim">— Cambridge</span>
-  <span class="cyan">►</span> <span class="white">B2 Upper-Intermediate English</span> <span class="dim">— Cambridge</span>
+  <span class="cyan">►</span> <span class="white">JavaScript Beginner & Fundamentals</span> <span class="white">— SoftUni</span>
+  <span class="cyan">►</span> <span class="white">JavaScript Advanced</span> <span class="white">— SoftUni</span> <span class="yellow">(in progress)</span>
+  <span class="cyan">►</span> <span class="white">Software Engineering JS & Node.js</span> <span class="white">— SoftUni</span> <span class="yellow">(in progress)</span>
+  <span class="cyan">►</span> <span class="white">Cybersecurity Certificate</span> <span class="white">— Erasmus Program</span>
+  <span class="cyan">►</span> <span class="white">C1 Advanced English</span> <span class="white">— Cambridge</span>
+  <span class="cyan">►</span> <span class="white">B2 Upper-Intermediate English</span> <span class="white">— Cambridge</span>
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -739,7 +739,7 @@ function cmdExperience() {
 <span class="cyan bold">┌─ EXPERIENCE ────────────────────────────────────────┐</span>
 
   <span class="green bold">⟩ Founder & Solo Developer</span>
-  <span class="cyan">Nooze</span> <span class="dim">· noozealarm.com</span>
+  <span class="cyan">Nooze</span> <span class="white">· noozealarm.com</span>
   <span class="dim">Apr 2025 → Present</span>
   <span class="white">Built an entire cross-platform sleep intelligence
   app from scratch — solo. Engineered multi-sensor
@@ -750,7 +750,7 @@ function cmdExperience() {
   <span class="yellow">Kotlin · Swift · Kotlin MP · React Native · Firestore</span>
 
   <span class="green bold">⟩ Open Source Creator</span>
-  <span class="cyan">Pulse</span> <span class="dim">· Reactive State Management</span>
+  <span class="cyan">Pulse</span> <span class="white">· Reactive State Management</span>
   <span class="dim">Nov 2025</span>
   <span class="white">Designed a lightweight reactive state management
   library for JavaScript with automatic dependency
@@ -764,7 +764,7 @@ function cmdExperience() {
   and fraud-risk analysis with scalable service design.</span>
 
   <span class="green bold">⟩ Desktop Developer (Project)</span>
-  <span class="cyan">Treasurer</span> <span class="dim">· AI File Manager</span>
+  <span class="cyan">Treasurer</span> <span class="white">· AI File Manager</span>
   <span class="dim">Mar 2024</span>
   <span class="white">Enterprise-level AI-integrated file management system
   with intelligent categorization and context-aware
@@ -776,7 +776,7 @@ function cmdExperience() {
 
 function cmdUptime() {
   const now = new Date();
-  const born = new Date(2007, 0, 1);
+  const born = new Date(2006, 0, 1);
   const diff = now - born;
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   addResponse(`<span class="white">up ${days} days,</span> <span class="cyan">${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}</span><span class="white">, load average: </span><span class="green">creativity/∞</span><span class="white">, </span><span class="green">coffee/critical</span><span class="white">, </span><span class="green">ambition/max</span>`);
@@ -863,23 +863,23 @@ function cmdNooze() {
 <span class="yellow bold">━━━ CORE FEATURES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
   <span class="green bold">01. Smart Wake</span>
-  <span class="dim">Multi-sensor fusion engine classifies sleep phases in
+  <span class="white">Multi-sensor fusion engine classifies sleep phases in
   real-time (accelerometer RMS + microphone dB analysis).
   Opens a wake window and wakes you in light sleep.
   Confidence scoring (0-1) with 0.60 threshold.</span>
 
   <span class="green bold">02. Wake Challenges</span>
-  <span class="dim">Prove you're awake: solve math, scan a QR code in
+  <span class="white">Prove you're awake: solve math, scan a QR code in
   another room, shake phone 30x, or use camera object
   recognition ("Show me a coffee cup").</span>
 
   <span class="green bold">03. Gamification</span>
-  <span class="dim">XP, levels, streaks, achievements, daily quests.
+  <span class="white">XP, levels, streaks, achievements, daily quests.
   Wake Duels — challenge friends: who wakes faster?
   Who has better sleep quality this week?</span>
 
   <span class="green bold">04. IoT Smart Home</span>
-  <span class="dim">Sunrise simulation via real lights. Supports 4
+  <span class="white">Sunrise simulation via real lights. Supports 4
   protocols: Home Assistant, Tuya Cloud, Tellur,
   and generic webhooks. Your home puts you to sleep
   and wakes you up.</span>
@@ -915,11 +915,11 @@ function cmdNooze() {
   <span class="cyan">Quality:</span>     <span class="white">Ktlint + Detekt + SonarQube</span>
   <span class="cyan">Nav:</span>         <span class="white">Jetpack Navigation + Deep Links (nooze:// scheme)</span>
 
-  <span class="dim">Targeting a</span> <span class="green bold">$15B</span> <span class="dim">sleep tech market growing 15%/year.</span>
-  <span class="dim">Freemium model · Premium at</span> <span class="cyan">€0.99/month</span>
-  <span class="dim">Presented at</span> <span class="cyan bold">RoboDays '26</span>
+  <span class="white">Targeting a</span> <span class="green bold">$15B</span> <span class="white">sleep tech market growing 15%/year.</span>
+  <span class="white">Freemium model · Premium at</span> <span class="cyan">€0.99/month</span>
+  <span class="white">Presented at</span> <span class="cyan bold">RoboDays '26</span>
 
-  <span class="dim italic">"We don't want to improve the alarm.
+  <span class="green italic">"We don't want to improve the alarm.
    We want to improve the way you wake up."</span>`);
 }
 
