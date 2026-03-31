@@ -67,12 +67,17 @@ const bootLines = [
   { text: '[    0.023] Mounting /dev/projects... OK', cls: 'green', delay: 40 },
   { text: '[    0.034] Mounting /dev/experience... OK', cls: 'green', delay: 40 },
   { text: '[    0.045] Loading modules:', cls: '', delay: 60 },
-  { text: '  [████████████████████] react.ko', cls: 'cyan', delay: 30 },
-  { text: '  [████████████████████] node.ko', cls: 'cyan', delay: 30 },
-  { text: '  [████████████████████] typescript.ko', cls: 'cyan', delay: 30 },
-  { text: '  [████████████████████] docker.ko', cls: 'cyan', delay: 30 },
-  { text: '  [████████████████████] postgresql.ko', cls: 'cyan', delay: 30 },
-  { text: '  [████████████████████] creativity.ko', cls: 'green', delay: 30 },
+  { text: '  [████████████████████] react.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] node.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] typescript.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] kotlin-native.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] claude-code.ko', cls: 'green', delay: 25 },
+  { text: '  [████████████████████] mcp-servers.ko', cls: 'green', delay: 25 },
+  { text: '  [████████████████████] ml-pipeline.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] rag-engine.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] docker.ko', cls: 'cyan', delay: 25 },
+  { text: '  [████████████████████] multi-agent-8x.ko', cls: 'green', delay: 25 },
+  { text: '  [████████████████████] creativity.ko', cls: 'green', delay: 25 },
   { text: '', cls: '', delay: 20 },
   { text: '[    0.128] Network: Connected to the Matrix', cls: 'green', delay: 80 },
   { text: '[    0.156] Starting portfolio-daemon...', cls: '', delay: 100 },
@@ -293,7 +298,7 @@ function cmdHelp() {
 <span class="cyan bold">║</span>  <span class="green bold">AVAILABLE COMMANDS</span>                                  <span class="cyan bold">║</span>
 <span class="cyan bold">╠══════════════════════════════════════════════════════╣</span>
 <span class="cyan bold">║</span>                                                      <span class="cyan bold">║</span>
-<span class="cyan bold">║</span>  <span class="cyan">about</span>      <span class="dim">→</span> Classified dossier (FBI-style)         <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="cyan">about</span>      <span class="dim">→</span> Classified dossier                     <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">skills</span>     <span class="dim">→</span> Technical skill bars                   <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">projects</span>   <span class="dim">→</span> Featured projects & repos              <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="cyan">nooze</span>      <span class="dim">→</span> Deep dive into my biggest project      <span class="cyan bold">║</span>
@@ -397,49 +402,267 @@ function skillBar(name, pct, color = '') {
 
 function cmdSkills() {
   addResponse(`
-<span class="cyan bold">┌─ SKILLS ────────────────────────────────────────────┐</span>
+<span class="cyan bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="cyan bold">║</span>  <span class="red bold">█▓▒░ FULL ARSENAL ░▒▓█</span>          <span class="dim">THREAT LEVEL: MAXIMUM</span>     <span class="cyan bold">║</span>
+<span class="cyan bold">╚══════════════════════════════════════════════════════════════╝</span>
 
   <span class="green bold">⟩ Languages</span>
-${skillBar('JavaScript', 95, 'cyan')}
+${skillBar('JavaScript / ES2024+', 95, 'cyan')}
 ${skillBar('TypeScript', 90, 'cyan')}
 ${skillBar('Kotlin', 85, 'cyan')}
+${skillBar('Python', 80, 'cyan')}
 ${skillBar('Swift', 75)}
 ${skillBar('Java', 75)}
 ${skillBar('C#', 70)}
-${skillBar('HTML/CSS', 95, 'cyan')}
+${skillBar('SQL', 80, 'cyan')}
+${skillBar('HTML5 / CSS3', 95, 'cyan')}
+${skillBar('Bash / Shell', 75)}
+${skillBar('Go', 60)}
 
-  <span class="green bold">⟩ Frontend</span>
-${skillBar('React', 90, 'cyan')}
+  <span class="green bold">⟩ Frontend Frameworks</span>
+${skillBar('React 18+', 90, 'cyan')}
+${skillBar('Next.js 14+', 80, 'cyan')}
 ${skillBar('React Native', 85, 'cyan')}
+${skillBar('Jetpack Compose', 85, 'cyan')}
 ${skillBar('Tailwind CSS', 85, 'cyan')}
+${skillBar('Material 3 / MUI', 80, 'cyan')}
 ${skillBar('Bootstrap', 80, 'cyan')}
+${skillBar('Vite', 80, 'cyan')}
+${skillBar('Webpack', 70)}
+${skillBar('Framer Motion', 70)}
 
   <span class="green bold">⟩ Backend & Runtime</span>
 ${skillBar('Node.js', 85, 'cyan')}
+${skillBar('Express.js', 80, 'cyan')}
+${skillBar('NestJS', 70)}
+${skillBar('Firebase Cloud Fn', 80, 'cyan')}
+${skillBar('Retrofit + OkHttp', 75)}
 ${skillBar('Spring Boot', 60)}
 ${skillBar('.NET', 55)}
 ${skillBar('Nginx', 65)}
+${skillBar('GraphQL', 65)}
+${skillBar('WebSockets', 70)}
 
   <span class="green bold">⟩ Mobile & Cross-Platform</span>
-${skillBar('Kotlin MP', 80, 'cyan')}
-${skillBar('Android Native', 75)}
+${skillBar('Android Native', 85, 'cyan')}
+${skillBar('Kotlin Multiplatform', 80, 'cyan')}
+${skillBar('React Native', 85, 'cyan')}
 ${skillBar('iOS (Swift)', 70)}
+${skillBar('Hilt / Dagger 2', 80, 'cyan')}
+${skillBar('Jetpack Navigation', 80, 'cyan')}
+${skillBar('Health Connect API', 75)}
+${skillBar('Play Billing v7', 70)}
 
-  <span class="green bold">⟩ Databases & Infra</span>
+  <span class="green bold">⟩ Databases & Data</span>
 ${skillBar('PostgreSQL', 80, 'cyan')}
-${skillBar('Firestore', 80, 'cyan')}
+${skillBar('Firebase Firestore', 80, 'cyan')}
+${skillBar('Room + SQLCipher', 80, 'cyan')}
 ${skillBar('MySQL', 70)}
+${skillBar('MongoDB', 65)}
 ${skillBar('Redis', 65)}
-${skillBar('SQLCipher', 70)}
+${skillBar('Prisma ORM', 70)}
+${skillBar('Moshi / JSON', 75)}
+
+  <span class="green bold">⟩ DevOps & Infrastructure</span>
+${skillBar('Git / GitHub', 90, 'cyan')}
+${skillBar('GitHub Actions CI/CD', 80, 'cyan')}
 ${skillBar('Docker', 70)}
+${skillBar('Gradle', 75)}
+${skillBar('Fastlane', 65)}
+${skillBar('Vercel / Netlify', 70)}
+${skillBar('Nginx', 65)}
+${skillBar('Linux Administration', 65)}
 
-  <span class="green bold">⟩ Tools & Other</span>
-${skillBar('Git', 90, 'cyan')}
+  <span class="green bold">⟩ Security & Crypto</span>
+${skillBar('OAuth 2.0 / SSO', 75)}
+${skillBar('SQLCipher AES-256', 75)}
+${skillBar('BCrypt / AndroidX Sec', 70)}
+${skillBar('ProGuard / R8', 70)}
+${skillBar('HTTPS Pinning', 70)}
+${skillBar('HMAC-SHA256 (Tuya)', 70)}
+${skillBar('Firestore ACL', 70)}
+${skillBar('Cybersecurity (Cert)', 70)}
+
+  <span class="green bold">⟩ Architecture & Patterns</span>
+${skillBar('MVVM + Clean Arch', 85, 'cyan')}
+${skillBar('Microservices', 75)}
+${skillBar('Repository Pattern', 80, 'cyan')}
+${skillBar('Reactive State Mgmt', 85, 'cyan')}
+${skillBar('Dependency Injection', 80, 'cyan')}
+${skillBar('Event-Driven Arch', 75)}
+${skillBar('Coroutines + Flows', 85, 'cyan')}
+
+  <span class="green bold">⟩ Testing & Quality</span>
+${skillBar('JUnit 5 + Mockito', 75)}
+${skillBar('Compose UI Testing', 70)}
+${skillBar('Jest + React Testing', 75)}
+${skillBar('Ktlint / Detekt', 70)}
+${skillBar('SonarQube', 65)}
+${skillBar('Crashlytics', 70)}
+
+  <span class="green bold">⟩ IoT & Hardware</span>
+${skillBar('Home Assistant REST', 70)}
+${skillBar('Tuya Cloud Protocol', 70)}
+${skillBar('Tellur Integration', 65)}
+${skillBar('Arduino', 60)}
+${skillBar('Webhook Protocols', 75)}
+${skillBar('Sunrise Simulation', 70)}
+
+  <span class="green bold">⟩ Design & Tools</span>
 ${skillBar('Figma', 70)}
-${skillBar('Home Assistant', 65)}
-${skillBar('Arduino / IoT', 60)}
+${skillBar('VS Code (Power User)', 90, 'cyan')}
+${skillBar('Postman / Insomnia', 75)}
+${skillBar('Firebase Console', 80, 'cyan')}
+${skillBar('Android Studio', 85, 'cyan')}
 
-<span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
+<span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="red bold">║</span>  <span class="yellow bold">⚡ AI / ML / LLM OPS — THE REAL WEAPON ⚡</span>                   <span class="red bold">║</span>
+<span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>
+
+  <span class="green bold">⟩ Machine Learning & AI</span>
+${skillBar('ML Sensor Fusion', 80, 'cyan')}
+${skillBar('TensorFlow / Keras', 65)}
+${skillBar('PyTorch', 60)}
+${skillBar('scikit-learn', 70)}
+${skillBar('Sleep Phase Classif.', 80, 'cyan')}
+${skillBar('Object Recognition', 70)}
+${skillBar('Embeddings / Vectors', 75)}
+${skillBar('Fine-tuning / LoRA', 65)}
+${skillBar('ONNX Runtime', 60)}
+${skillBar('Prompt Engineering', 90, 'cyan')}
+
+  <span class="green bold">⟩ RAG & Vector Systems</span>
+${skillBar('RAG Pipeline Design', 85, 'cyan')}
+${skillBar('Pinecone / Weaviate', 70)}
+${skillBar('ChromaDB', 75)}
+${skillBar('LangChain', 75)}
+${skillBar('LlamaIndex', 70)}
+${skillBar('Chunk + Embed + Ret.', 80, 'cyan')}
+${skillBar('Semantic Search', 75)}
+${skillBar('Context Window Mgmt', 85, 'cyan')}
+
+<span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="red bold">║</span>  <span class="cyan bold">🧠 CLAUDE CODE MASTERY — GRANDMASTER LEVEL 🧠</span>              <span class="red bold">║</span>
+<span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>
+
+  <span class="green bold">⟩ Core Claude Code</span>
+${skillBar('Claude Code CLI', 95, 'cyan')}
+${skillBar('Claude Opus/Sonnet', 95, 'cyan')}
+${skillBar('Anthropic API / SDK', 90, 'cyan')}
+${skillBar('Claude Agent SDK', 85, 'cyan')}
+${skillBar('Custom Skills (/cmd)', 90, 'cyan')}
+${skillBar('Auto-Memory Systems', 95, 'cyan')}
+${skillBar('CLAUDE.md Config', 90, 'cyan')}
+${skillBar('Plan Mode Architect', 90, 'cyan')}
+
+  <span class="yellow bold">⟩ ⚡ SPECIAL SKILL: MULTI-TERMINAL ORCHESTRATION</span>
+${skillBar('8x Parallel Claudes', 95, 'cyan')}
+  <span class="white">Can simultaneously pilot </span><span class="red bold">8 terminal instances</span>
+  <span class="white">of Claude Code at once. Coordinate parallel
+  agents across different repos, tasks, and goals.
+  Like conducting an orchestra — if the orchestra
+  was made of superintelligent AI terminals.</span>
+
+  <span class="green bold">⟩ MCP Server Integration</span>
+${skillBar('MCP Protocol', 90, 'cyan')}
+${skillBar('Playwright (Browser)', 85, 'cyan')}
+${skillBar('Context7 (Live Docs)', 85, 'cyan')}
+${skillBar('Gmail MCP', 80, 'cyan')}
+${skillBar('Google Calendar MCP', 80, 'cyan')}
+${skillBar('Custom MCP Servers', 80, 'cyan')}
+${skillBar('Slack / Discord MCP', 75)}
+${skillBar('Database MCP', 75)}
+${skillBar('File System MCP', 80, 'cyan')}
+
+  <span class="green bold">⟩ Agent Orchestration</span>
+${skillBar('Sub-agent Spawning', 90, 'cyan')}
+${skillBar('Background Agents', 90, 'cyan')}
+${skillBar('Worktree Isolation', 85, 'cyan')}
+${skillBar('Parallel Task Exec', 90, 'cyan')}
+${skillBar('Agent Composition', 85, 'cyan')}
+${skillBar('Cross-repo Agents', 80, 'cyan')}
+
+  <span class="green bold">⟩ Lifecycle Hooks & Events</span>
+${skillBar('Pre-command Hooks', 90, 'cyan')}
+${skillBar('Post-command Hooks', 90, 'cyan')}
+${skillBar('Pre-commit Hooks', 85, 'cyan')}
+${skillBar('Tool-call Intercept', 85, 'cyan')}
+${skillBar('Event-driven Chains', 85, 'cyan')}
+${skillBar('Hook Error Recovery', 80, 'cyan')}
+
+  <span class="green bold">⟩ Remote & Scheduled Ops</span>
+${skillBar('Remote Agent Trigger', 90, 'cyan')}
+${skillBar('Cron-scheduled Agents', 85, 'cyan')}
+${skillBar('Headless Execution', 85, 'cyan')}
+${skillBar('Remote Monitoring', 80, 'cyan')}
+${skillBar('CI/CD Agent Pipelines', 80, 'cyan')}
+${skillBar('Auto-deploy Triggers', 80, 'cyan')}
+
+  <span class="green bold">⟩ Advanced Claude Techniques</span>
+${skillBar('Multi-file Refactors', 90, 'cyan')}
+${skillBar('Codebase-wide Search', 90, 'cyan')}
+${skillBar('Test Generation', 85, 'cyan')}
+${skillBar('PR Review Automation', 85, 'cyan')}
+${skillBar('Git Workflow Automate', 90, 'cyan')}
+${skillBar('Notebook / Jupyter', 75)}
+${skillBar('Web Fetch + Scrape', 80, 'cyan')}
+${skillBar('Screenshot Analysis', 80, 'cyan')}
+${skillBar('PDF Ingestion', 75)}
+
+<span class="yellow bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="yellow bold">║</span>  <span class="white bold">👤 SOFT SKILLS — THE HUMAN LAYER</span>                           <span class="yellow bold">║</span>
+<span class="yellow bold">╚══════════════════════════════════════════════════════════════╝</span>
+
+  <span class="green bold">⟩ Leadership & Ownership</span>
+${skillBar('Solo Project Delivery', 95, 'cyan')}
+${skillBar('Founder Mentality', 95, 'cyan')}
+${skillBar('Decision-making', 85, 'cyan')}
+${skillBar('Product Thinking', 85, 'cyan')}
+${skillBar('Initiative / Bias to Act', 90, 'cyan')}
+
+  <span class="green bold">⟩ Communication</span>
+${skillBar('Technical Writing', 85, 'cyan')}
+${skillBar('English (C1 Cambridge)', 90, 'cyan')}
+${skillBar('Bulgarian (Native)', 100, 'cyan')}
+${skillBar('Presentation Skills', 80, 'cyan')}
+${skillBar('Documentation', 80, 'cyan')}
+
+  <span class="green bold">⟩ Problem Solving</span>
+${skillBar('Debugging Under Fire', 90, 'cyan')}
+${skillBar('Rapid Prototyping', 90, 'cyan')}
+${skillBar('Root Cause Analysis', 85, 'cyan')}
+${skillBar('Creative Workarounds', 90, 'cyan')}
+${skillBar('System-level Thinking', 85, 'cyan')}
+
+  <span class="green bold">⟩ Work Ethic & Mindset</span>
+${skillBar('Self-taught Drive', 95, 'cyan')}
+${skillBar('Ship-it Velocity', 95, 'cyan')}
+${skillBar('Learning Speed', 90, 'cyan')}
+${skillBar('Curiosity', 100, 'cyan')}
+${skillBar('Caffeine Tolerance', 100, 'cyan')}
+${skillBar('Sleep Deprivation', 95, 'cyan')}
+  <span class="dim">(ironic for the guy who built a sleep app)</span>
+
+  <span class="green bold">⟩ Collaboration</span>
+${skillBar('Open Source Contrib.', 80, 'cyan')}
+${skillBar('Code Review', 80, 'cyan')}
+${skillBar('Pair Programming', 75)}
+${skillBar('Mentoring', 70)}
+${skillBar('Async Communication', 85, 'cyan')}
+
+  <span class="green bold">⟩ Business & Strategy</span>
+${skillBar('Market Research', 80, 'cyan')}
+${skillBar('Startup Thinking', 85, 'cyan')}
+${skillBar('User Empathy', 80, 'cyan')}
+${skillBar('Freemium Modeling', 75)}
+${skillBar('Pitch / Demo', 80, 'cyan')}
+
+<span class="dim">  ── Total: 160+ skills loaded ──</span>
+<span class="dim">  ── Status: ALL SYSTEMS OPERATIONAL ──</span>
+
+<span class="cyan bold">╔══════════════════════════════════════════════════════════════╗</span>
+<span class="cyan bold">║</span>  <span class="green italic">"I don't just use AI tools. I make them do my bidding."</span>     <span class="cyan bold">║</span>
+<span class="cyan bold">╚══════════════════════════════════════════════════════════════╝</span>`);
 }
 
 function cmdProjects() {
@@ -536,7 +759,7 @@ function cmdNeofetch() {
     <span class="label">Location:</span> <span class="value">Sofia, Bulgaria (UTC+3)</span>
     <span class="label">Kernel:</span> <span class="value">Full-Stack v6.4.2-NOOZE</span>
     <span class="label">Uptime:</span> <span class="value">19 years, always coding</span>
-    <span class="label">Packages:</span> <span class="value">JS, TS, Kotlin, Swift, React, Node, C#, Java</span>
+    <span class="label">Packages:</span> <span class="value">JS, TS, Kotlin, Python, Swift, React, Next.js, Node, C#, Go + 120 more</span>
     <span class="label">Shell:</span> <span class="value">txdo-sh 2.0 (interactive)</span>
     <span class="label">Resolution:</span> <span class="value">Pixel perfect</span>
     <span class="label">DE:</span> <span class="value">Terminal-only (GUI is overrated)</span>
@@ -563,7 +786,7 @@ function cmdWhoami() {
   addResponse(`<span class="cyan bold">Tedo "Txdo" Mirchev</span> <span class="dim">—</span> <span class="white">19yo Full-Stack Software Engineer</span>
 <span class="white">Sofia, Bulgaria · UNIBIT CS · SoftUni JS/Node.js · Cambridge C1</span>
 <span class="green">Founder:</span> <span class="white">Nooze (noozealarm.com) — cross-platform sleep intelligence</span>
-<span class="green">Stack:</span> <span class="white">JS/TS · Kotlin · Swift · React · Node.js · PostgreSQL · Docker</span>
+<span class="green">Stack:</span> <span class="white">JS/TS · Kotlin · Python · React · Next.js · Node · Claude Code · ML · 130+ skills</span>
 <span class="dim">Run</span> <span class="cyan">'about'</span> <span class="dim">for the full classified dossier.</span>`);
 }
 
@@ -588,14 +811,18 @@ function cmdCat(args) {
   const files = {
     'about.txt': () => cmdAbout(),
     'skills.json': () => addResponse(`<span class="yellow">{</span>
-  <span class="cyan">"languages"</span>: <span class="yellow">[</span><span class="green">"JavaScript"</span>, <span class="green">"TypeScript"</span>, <span class="green">"Kotlin"</span>, <span class="green">"Swift"</span>, <span class="green">"Java"</span>, <span class="green">"C#"</span><span class="yellow">]</span>,
-  <span class="cyan">"frontend"</span>: <span class="yellow">[</span><span class="green">"React"</span>, <span class="green">"React Native"</span>, <span class="green">"Tailwind"</span>, <span class="green">"Bootstrap"</span><span class="yellow">]</span>,
-  <span class="cyan">"backend"</span>: <span class="yellow">[</span><span class="green">"Node.js"</span>, <span class="green">"Spring Boot"</span>, <span class="green">".NET"</span>, <span class="green">"Nginx"</span><span class="yellow">]</span>,
-  <span class="cyan">"mobile"</span>: <span class="yellow">[</span><span class="green">"Kotlin MP"</span>, <span class="green">"Android Native"</span>, <span class="green">"iOS (Swift)"</span>, <span class="green">"React Native"</span><span class="yellow">]</span>,
-  <span class="cyan">"databases"</span>: <span class="yellow">[</span><span class="green">"PostgreSQL"</span>, <span class="green">"Firestore"</span>, <span class="green">"MySQL"</span>, <span class="green">"Redis"</span>, <span class="green">"SQLCipher"</span><span class="yellow">]</span>,
-  <span class="cyan">"devops"</span>: <span class="yellow">[</span><span class="green">"Docker"</span>, <span class="green">"Git"</span>, <span class="green">"Nginx"</span><span class="yellow">]</span>,
-  <span class="cyan">"iot"</span>: <span class="yellow">[</span><span class="green">"Home Assistant"</span>, <span class="green">"Tuya Cloud"</span>, <span class="green">"Tellur"</span>, <span class="green">"Arduino"</span><span class="yellow">]</span>,
-  <span class="cyan">"other"</span>: <span class="yellow">[</span><span class="green">"Figma"</span>, <span class="green">"Microservices"</span>, <span class="green">"Reactive State Mgmt"</span><span class="yellow">]</span>
+  <span class="cyan">"languages"</span>: <span class="yellow">[</span><span class="green">"JavaScript"</span>, <span class="green">"TypeScript"</span>, <span class="green">"Kotlin"</span>, <span class="green">"Python"</span>, <span class="green">"Swift"</span>, <span class="green">"Java"</span>, <span class="green">"C#"</span>, <span class="green">"Go"</span>, <span class="green">"SQL"</span>, <span class="green">"Bash"</span><span class="yellow">]</span>,
+  <span class="cyan">"frontend"</span>: <span class="yellow">[</span><span class="green">"React 18"</span>, <span class="green">"Next.js 14"</span>, <span class="green">"React Native"</span>, <span class="green">"Jetpack Compose"</span>, <span class="green">"Tailwind"</span>, <span class="green">"Material 3"</span>, <span class="green">"Vite"</span>, <span class="green">"Webpack"</span>, <span class="green">"Framer Motion"</span><span class="yellow">]</span>,
+  <span class="cyan">"backend"</span>: <span class="yellow">[</span><span class="green">"Node.js"</span>, <span class="green">"Express"</span>, <span class="green">"NestJS"</span>, <span class="green">"Firebase Functions"</span>, <span class="green">"Retrofit"</span>, <span class="green">"GraphQL"</span>, <span class="green">"WebSockets"</span>, <span class="green">"Spring Boot"</span>, <span class="green">".NET"</span><span class="yellow">]</span>,
+  <span class="cyan">"mobile"</span>: <span class="yellow">[</span><span class="green">"Android Native"</span>, <span class="green">"Kotlin MP"</span>, <span class="green">"React Native"</span>, <span class="green">"iOS Swift"</span>, <span class="green">"Hilt/Dagger"</span>, <span class="green">"Health Connect"</span>, <span class="green">"Play Billing v7"</span><span class="yellow">]</span>,
+  <span class="cyan">"databases"</span>: <span class="yellow">[</span><span class="green">"PostgreSQL"</span>, <span class="green">"Firestore"</span>, <span class="green">"Room+SQLCipher"</span>, <span class="green">"MySQL"</span>, <span class="green">"MongoDB"</span>, <span class="green">"Redis"</span>, <span class="green">"Prisma"</span>, <span class="green">"ChromaDB"</span>, <span class="green">"Pinecone"</span><span class="yellow">]</span>,
+  <span class="cyan">"devops"</span>: <span class="yellow">[</span><span class="green">"Docker"</span>, <span class="green">"Git"</span>, <span class="green">"GitHub Actions"</span>, <span class="green">"Gradle"</span>, <span class="green">"Fastlane"</span>, <span class="green">"Vercel"</span>, <span class="green">"Nginx"</span>, <span class="green">"Linux"</span><span class="yellow">]</span>,
+  <span class="cyan">"security"</span>: <span class="yellow">[</span><span class="green">"OAuth 2.0"</span>, <span class="green">"AES-256"</span>, <span class="green">"BCrypt"</span>, <span class="green">"HTTPS Pinning"</span>, <span class="green">"HMAC-SHA256"</span>, <span class="green">"ProGuard/R8"</span><span class="yellow">]</span>,
+  <span class="cyan">"ai_ml"</span>: <span class="yellow">[</span><span class="green">"ML Sensor Fusion"</span>, <span class="green">"TensorFlow"</span>, <span class="green">"PyTorch"</span>, <span class="green">"scikit-learn"</span>, <span class="green">"RAG Pipelines"</span>, <span class="green">"LangChain"</span>, <span class="green">"LlamaIndex"</span>, <span class="green">"Embeddings"</span>, <span class="green">"Fine-tuning"</span>, <span class="green">"ONNX"</span><span class="yellow">]</span>,
+  <span class="cyan">"claude_code"</span>: <span class="yellow">[</span><span class="green">"8x Multi-Terminal Orchestration"</span>, <span class="green">"MCP Servers"</span>, <span class="green">"Lifecycle Hooks"</span>, <span class="green">"Remote Triggers"</span>, <span class="green">"Cron Agents"</span>, <span class="green">"RAG Integration"</span>, <span class="green">"Sub-agent Parallelism"</span>, <span class="green">"Worktree Isolation"</span>, <span class="green">"Auto-Memory"</span>, <span class="green">"Plan Mode"</span>, <span class="green">"Custom Skills"</span>, <span class="green">"Playwright MCP"</span>, <span class="green">"Context7 MCP"</span>, <span class="green">"Gmail/Calendar MCP"</span><span class="yellow">]</span>,
+  <span class="cyan">"iot"</span>: <span class="yellow">[</span><span class="green">"Home Assistant"</span>, <span class="green">"Tuya Cloud"</span>, <span class="green">"Tellur"</span>, <span class="green">"Arduino"</span>, <span class="green">"Webhooks"</span><span class="yellow">]</span>,
+  <span class="cyan">"architecture"</span>: <span class="yellow">[</span><span class="green">"MVVM"</span>, <span class="green">"Clean Architecture"</span>, <span class="green">"Microservices"</span>, <span class="green">"Reactive State"</span>, <span class="green">"Event-Driven"</span>, <span class="green">"DI Patterns"</span><span class="yellow">]</span>,
+  <span class="cyan">"_meta"</span>: <span class="yellow">{</span> <span class="cyan">"total_skills"</span>: <span class="red">130</span>, <span class="cyan">"threat_level"</span>: <span class="green">"MAXIMUM"</span> <span class="yellow">}</span>
 <span class="yellow">}</span>`),
     'projects.json': () => addResponse(`<span class="yellow">[</span>
   <span class="yellow">{</span>
