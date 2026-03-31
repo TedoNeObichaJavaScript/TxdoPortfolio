@@ -7,6 +7,54 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            terminal: {
+              green: '#00ff41',
+              cyan: '#00e5ff',
+              red: '#ff0040',
+              yellow: '#ffd600',
+              purple: '#bf00ff',
+              orange: '#ff9100',
+              bg: '#0a0a0a',
+              surface: '#0d0d0d',
+            }
+          },
+          fontFamily: {
+            mono: ['Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', 'monospace'],
+          },
+          animation: {
+            'blink': 'blink 1s step-end infinite',
+            'scanline': 'scanline-move 12s linear infinite',
+            'sweep': 'scanline-sweep 6s ease-in-out infinite',
+            'flicker': 'flicker 0.3s infinite',
+            'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+            'fade-in': 'fadeIn 1s ease-out forwards',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+            'terminal-boot': 'terminalBoot 1s ease-out',
+          },
+          keyframes: {
+            'glow-pulse': {
+              '0%, 100%': { textShadow: '0 0 10px #00ff4180, 0 0 20px #00ff4140' },
+              '50%': { textShadow: '0 0 20px #00ff41cc, 0 0 40px #00ff4180, 0 0 60px #00ff4140' },
+            },
+            'fadeIn': {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            'slideUp': {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        }
+      }
+    }
+  </script>
 </head>
 <body>
   <!-- Matrix Rain Canvas -->
