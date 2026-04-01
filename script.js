@@ -129,6 +129,9 @@ const terminalBody = document.getElementById('terminal-body');
 const commandHistory = [];
 let historyIndex = -1;
 let currentPath = '~';
+let isTyping = false;
+let skipTyping = false;
+let typingGeneration = 0;
 
 // Update cursor position
 function updateCursor() {
@@ -147,6 +150,7 @@ commandInput.addEventListener('input', updateCursor);
 
 commandInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
+    skipTyping = true;
     const cmd = commandInput.value.trim();
     if (cmd) {
       commandHistory.push(cmd);
@@ -193,12 +197,72 @@ function addPromptLine(cmd) {
   output.appendChild(div);
 }
 
-function addResponse(html) {
+async function addResponse(html) {
+  // Clean whitespace from template literals
+  html = html.replace(/^\n+/, '').replace(/\n+$/, '');
+  html = html.replace(/(<div[^>]*>)[ \t]*\n[ \t]*/g, '$1');
+  html = html.replace(/\n[ \t]*(<\/div>)/g, '$1');
+
   const div = document.createElement('div');
   div.className = 'response';
-  div.innerHTML = html;
   output.appendChild(div);
+
+  const thisGen = ++typingGeneration;
+  const plainLen = html.replace(/<[^>]*>/g, '').length;
+
+  isTyping = true;
+  skipTyping = false;
+
+  if (plainLen > 1500) {
+    // Line-by-line reveal for long content
+    const lines = html.split('\n');
+    let acc = '';
+    for (let j = 0; j < lines.length; j++) {
+      if (skipTyping || typingGeneration !== thisGen) break;
+      acc += (j > 0 ? '\n' : '') + lines[j];
+      div.innerHTML = acc + '<span class="type-cursor">\u2588</span>';
+      scrollToBottom();
+      if (j % 3 === 0) await sleep(8);
+    }
+  } else {
+    // Character-by-character typing
+    const batch = plainLen > 500 ? 5 : plainLen > 200 ? 3 : 2;
+    const delay = plainLen > 500 ? 2 : plainLen > 200 ? 4 : 8;
+    let buf = '';
+    let i = 0;
+    let c = 0;
+
+    while (i < html.length) {
+      if (skipTyping || typingGeneration !== thisGen) break;
+
+      // HTML tags — add whole tag at once
+      if (html[i] === '<') {
+        const end = html.indexOf('>', i);
+        if (end !== -1) { buf += html.substring(i, end + 1); i = end + 1; continue; }
+      }
+
+      // HTML entities — add whole entity at once
+      if (html[i] === '&') {
+        const semi = html.indexOf(';', i);
+        if (semi !== -1 && semi - i < 10) { buf += html.substring(i, semi + 1); i = semi + 1; c++; continue; }
+      }
+
+      buf += html[i];
+      i++;
+      c++;
+
+      if (c >= batch) {
+        div.innerHTML = buf + '<span class="type-cursor">\u2588</span>';
+        scrollToBottom();
+        await sleep(delay);
+        c = 0;
+      }
+    }
+  }
+
+  div.innerHTML = html;
   scrollToBottom();
+  if (typingGeneration === thisGen) isTyping = false;
 }
 
 function scrollToBottom() {
@@ -335,7 +399,7 @@ function cmdAbout() {
     <img src="az.webp" alt="TXDO" style="width:120px;height:120px;border-radius:6px;border:2px solid #00e5ff;box-shadow:0 0 15px #00e5ff40;object-fit:cover;">
     <div style="margin-top:6px;"><span class="cyan bold">[ PHOTO ID ]</span></div>
   </div>
-  <div style="line-height:1.8;">
+  <div class="neofetch-info" style="line-height:1.8;">
     <span class="cyan bold">SUBJECT:</span>     <span class="white bold">Teodor "Txdo" Mirchev</span>
     <span class="cyan bold">ALIAS:</span>       <span class="green bold">TedoNeObichaJavaScript</span>
     <span class="cyan bold">AGE:</span>         <span class="white">19</span> <span class="dim">(born 2006, Sofia, BG)</span>
@@ -352,10 +416,15 @@ function cmdAbout() {
   Sofia — the epicenter of his operations. Cover story:
   university student. Real mission: infiltrate the tech scene.</span>
 
+  <span class="white">Secondary education:</span>
+  <span class="cyan">СУ „Св.св.Кирил и Методий"</span> <span class="white">— Natural Sciences, Карнобат</span>
+  <span class="cyan">ПГЕЕ „Константин Фотинов"</span> <span class="white">— Applied Programming, Бургас</span>
+
   <span class="white">Currently enrolled at</span> <span class="cyan">UNIBIT</span> <span class="white">(Computer Science) and</span> <span class="cyan">SoftUni</span>
   <span class="white">(Software Engineering — JS & Node.js track). Holds a</span>
-  <span class="cyan">Cybersecurity Certificate</span> <span class="white">from the Erasmus Program, a</span>
-  <span class="cyan">Cambridge C1 Advanced English</span> <span class="white">clearance, and multiple SoftUni
+  <span class="cyan">Cybersecurity Certificate</span> <span class="white">from the Erasmus Program,</span>
+  <span class="cyan">Cambridge C1 Advanced</span> <span class="white">+</span> <span class="cyan">B2 First</span> <span class="white">English clearances,</span>
+  <span class="cyan">Special Award at RoboDays '25</span><span class="white">, and multiple SoftUni
   certifications in JavaScript.</span>
 
 <span class="yellow bold">━━━ MOST NOTORIOUS OPERATION ━━━━━━━━━━━━━━━━━━━━━━━━━</span>
@@ -367,13 +436,14 @@ function cmdAbout() {
   <span class="yellow">Stack: Kotlin 1.9 · Jetpack Compose · MVVM/Clean Arch · Hilt</span>
   <span class="yellow">Room+SQLCipher · Firestore · Firebase Auth · FCM · Retrofit</span>
   <span class="yellow">Health Connect · ML Sensor Fusion · IoT · 137+ test cases</span>
-  <span class="white">Presented at</span> <span class="cyan">RoboDays '26</span> <span class="white">· Targeting a $15B sleep tech market</span>
+  <span class="cyan">🥈 2nd Place RoboDays '26</span> <span class="white">·</span> <span class="cyan">2nd Place Startup Fair UNIBIT '25</span>
+  <span class="white">Targeting a $15B sleep tech market</span>
   <span class="red bold">Subject built the entire system solo in 1 year. Age: 18-19.</span>
 
 <span class="yellow bold">━━━ KNOWN ASSOCIATES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
 
   <span class="cyan">Pulse</span>        <span class="white">→ Reactive state management framework (TypeScript)</span>
-  <span class="cyan">Sudo Quest</span>   <span class="white">→ Browser coding game teaching JS, Git, HTML, C#</span>
+  <span class="cyan">Sudo Quest</span>   <span class="white">→ Browser coding game teaching JS, Git, HTML, C# ·</span> <span class="cyan">🥉 3rd Place RoboDays '26</span>
   <span class="cyan">Fraud Shield</span> <span class="white">→ Invoice fraud detection microservices backend</span>
   <span class="cyan">Treasurer</span>    <span class="white">→ AI-integrated enterprise file manager (C#)</span>
 
@@ -410,14 +480,14 @@ function cmdSkills() {
 ${skillBar('JavaScript / ES2024+', 95, 'cyan')}
 ${skillBar('TypeScript', 90, 'cyan')}
 ${skillBar('Kotlin', 85, 'cyan')}
-${skillBar('Python', 80, 'cyan')}
+${skillBar('Python', 55)}
 ${skillBar('Swift', 75)}
 ${skillBar('Java', 75)}
 ${skillBar('C#', 70)}
 ${skillBar('SQL', 80, 'cyan')}
 ${skillBar('HTML5 / CSS3', 95, 'cyan')}
 ${skillBar('Bash / Shell', 75)}
-${skillBar('Go', 60)}
+${skillBar('Go', 40)}
 
   <span class="green bold">⟩ Frontend Frameworks</span>
 ${skillBar('React 18+', 90, 'cyan')}
@@ -434,21 +504,21 @@ ${skillBar('Framer Motion', 70)}
   <span class="green bold">⟩ Backend & Runtime</span>
 ${skillBar('Node.js', 85, 'cyan')}
 ${skillBar('Express.js', 80, 'cyan')}
-${skillBar('NestJS', 70)}
+${skillBar('NestJS', 45)}
 ${skillBar('Firebase Cloud Fn', 80, 'cyan')}
 ${skillBar('Retrofit + OkHttp', 75)}
 ${skillBar('Spring Boot', 60)}
 ${skillBar('.NET', 55)}
 ${skillBar('Nginx', 65)}
-${skillBar('GraphQL', 65)}
-${skillBar('WebSockets', 70)}
+${skillBar('GraphQL', 40)}
+${skillBar('WebSockets', 45)}
 
   <span class="green bold">⟩ Mobile & Cross-Platform</span>
 ${skillBar('Android Native', 85, 'cyan')}
 ${skillBar('Kotlin Multiplatform', 80, 'cyan')}
 ${skillBar('React Native', 85, 'cyan')}
-${skillBar('iOS (Swift)', 70)}
-${skillBar('Hilt / Dagger 2', 80, 'cyan')}
+${skillBar('iOS (Swift)', 45)}
+${skillBar('Hilt / Dagger 2', 55)}
 ${skillBar('Jetpack Navigation', 80, 'cyan')}
 ${skillBar('Health Connect API', 75)}
 ${skillBar('Play Billing v7', 70)}
@@ -458,10 +528,8 @@ ${skillBar('PostgreSQL', 80, 'cyan')}
 ${skillBar('Firebase Firestore', 80, 'cyan')}
 ${skillBar('Room + SQLCipher', 80, 'cyan')}
 ${skillBar('MySQL', 70)}
-${skillBar('MongoDB', 65)}
 ${skillBar('Redis', 65)}
-${skillBar('Prisma ORM', 70)}
-${skillBar('Moshi / JSON', 75)}
+${skillBar('JSON', 55)}
 
   <span class="green bold">⟩ DevOps & Infrastructure</span>
 ${skillBar('Git / GitHub', 90, 'cyan')}
@@ -469,11 +537,10 @@ ${skillBar('GitHub Actions CI/CD', 80, 'cyan')}
 ${skillBar('Docker', 70)}
 ${skillBar('Gradle', 75)}
 ${skillBar('Fastlane', 65)}
-${skillBar('Vercel / Netlify', 70)}
+${skillBar('Netlify', 70)}
 ${skillBar('Nginx', 65)}
-${skillBar('Linux Administration', 65)}
 
-  <span class="green bold">⟩ Security & Crypto</span>
+  <span class="green bold">⟩ Security</span>
 ${skillBar('OAuth 2.0 / SSO', 75)}
 ${skillBar('SQLCipher AES-256', 75)}
 ${skillBar('BCrypt / AndroidX Sec', 70)}
@@ -493,11 +560,10 @@ ${skillBar('Event-Driven Arch', 75)}
 ${skillBar('Coroutines + Flows', 85, 'cyan')}
 
   <span class="green bold">⟩ Testing & Quality</span>
-${skillBar('JUnit 5 + Mockito', 75)}
+${skillBar('JUnit 5', 75)}
 ${skillBar('Compose UI Testing', 70)}
 ${skillBar('Jest + React Testing', 75)}
 ${skillBar('Ktlint / Detekt', 70)}
-${skillBar('SonarQube', 65)}
 ${skillBar('Crashlytics', 70)}
 
   <span class="green bold">⟩ IoT & Hardware</span>
@@ -509,9 +575,8 @@ ${skillBar('Webhook Protocols', 75)}
 ${skillBar('Sunrise Simulation', 70)}
 
   <span class="green bold">⟩ Design & Tools</span>
-${skillBar('Figma', 70)}
+${skillBar('Figma', 45)}
 ${skillBar('VS Code (Power User)', 90, 'cyan')}
-${skillBar('Postman / Insomnia', 75)}
 ${skillBar('Firebase Console', 80, 'cyan')}
 ${skillBar('Android Studio', 85, 'cyan')}
 
@@ -520,26 +585,10 @@ ${skillBar('Android Studio', 85, 'cyan')}
 <span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>
 
   <span class="green bold">⟩ Machine Learning & AI</span>
-${skillBar('ML Sensor Fusion', 80, 'cyan')}
-${skillBar('TensorFlow / Keras', 65)}
-${skillBar('PyTorch', 60)}
-${skillBar('scikit-learn', 70)}
 ${skillBar('Sleep Phase Classif.', 80, 'cyan')}
-${skillBar('Object Recognition', 70)}
-${skillBar('Embeddings / Vectors', 75)}
 ${skillBar('Fine-tuning / LoRA', 65)}
-${skillBar('ONNX Runtime', 60)}
 ${skillBar('Prompt Engineering', 90, 'cyan')}
-
-  <span class="green bold">⟩ RAG & Vector Systems</span>
-${skillBar('RAG Pipeline Design', 85, 'cyan')}
-${skillBar('Pinecone / Weaviate', 70)}
-${skillBar('ChromaDB', 75)}
-${skillBar('LangChain', 75)}
-${skillBar('LlamaIndex', 70)}
-${skillBar('Chunk + Embed + Ret.', 80, 'cyan')}
-${skillBar('Semantic Search', 75)}
-${skillBar('Context Window Mgmt', 85, 'cyan')}
+${skillBar('ML Sensor Fusion', 80, 'cyan')}
 
 <span class="red bold">╔══════════════════════════════════════════════════════════════╗</span>
 <span class="red bold">║</span>  <span class="cyan bold">🧠 CLAUDE CODE MASTERY — GRANDMASTER LEVEL 🧠</span>              <span class="red bold">║</span>
@@ -567,20 +616,14 @@ ${skillBar('8x Parallel Claudes', 95, 'cyan')}
 ${skillBar('MCP Protocol', 90, 'cyan')}
 ${skillBar('Playwright (Browser)', 85, 'cyan')}
 ${skillBar('Context7 (Live Docs)', 85, 'cyan')}
-${skillBar('Gmail MCP', 80, 'cyan')}
-${skillBar('Google Calendar MCP', 80, 'cyan')}
 ${skillBar('Custom MCP Servers', 80, 'cyan')}
-${skillBar('Slack / Discord MCP', 75)}
 ${skillBar('Database MCP', 75)}
-${skillBar('File System MCP', 80, 'cyan')}
 
   <span class="green bold">⟩ Agent Orchestration</span>
 ${skillBar('Sub-agent Spawning', 90, 'cyan')}
 ${skillBar('Background Agents', 90, 'cyan')}
-${skillBar('Worktree Isolation', 85, 'cyan')}
 ${skillBar('Parallel Task Exec', 90, 'cyan')}
 ${skillBar('Agent Composition', 85, 'cyan')}
-${skillBar('Cross-repo Agents', 80, 'cyan')}
 
   <span class="green bold">⟩ Lifecycle Hooks & Events</span>
 ${skillBar('Pre-command Hooks', 90, 'cyan')}
@@ -592,8 +635,6 @@ ${skillBar('Hook Error Recovery', 80, 'cyan')}
 
   <span class="green bold">⟩ Remote & Scheduled Ops</span>
 ${skillBar('Remote Agent Trigger', 90, 'cyan')}
-${skillBar('Cron-scheduled Agents', 85, 'cyan')}
-${skillBar('Headless Execution', 85, 'cyan')}
 ${skillBar('Remote Monitoring', 80, 'cyan')}
 ${skillBar('CI/CD Agent Pipelines', 80, 'cyan')}
 ${skillBar('Auto-deploy Triggers', 80, 'cyan')}
@@ -602,9 +643,7 @@ ${skillBar('Auto-deploy Triggers', 80, 'cyan')}
 ${skillBar('Multi-file Refactors', 90, 'cyan')}
 ${skillBar('Codebase-wide Search', 90, 'cyan')}
 ${skillBar('Test Generation', 85, 'cyan')}
-${skillBar('PR Review Automation', 85, 'cyan')}
 ${skillBar('Git Workflow Automate', 90, 'cyan')}
-${skillBar('Notebook / Jupyter', 75)}
 ${skillBar('Web Fetch + Scrape', 80, 'cyan')}
 ${skillBar('Screenshot Analysis', 80, 'cyan')}
 ${skillBar('PDF Ingestion', 75)}
@@ -628,34 +667,34 @@ ${skillBar('Presentation Skills', 80, 'cyan')}
 ${skillBar('Documentation', 80, 'cyan')}
 
   <span class="green bold">⟩ Problem Solving</span>
-${skillBar('Debugging Under Fire', 90, 'cyan')}
+${skillBar('Debugging Under Fire', 70)}
 ${skillBar('Rapid Prototyping', 90, 'cyan')}
 ${skillBar('Root Cause Analysis', 85, 'cyan')}
 ${skillBar('Creative Workarounds', 90, 'cyan')}
 ${skillBar('System-level Thinking', 85, 'cyan')}
 
   <span class="green bold">⟩ Work Ethic & Mindset</span>
-${skillBar('Self-taught Drive', 95, 'cyan')}
-${skillBar('Ship-it Velocity', 95, 'cyan')}
+${skillBar('Self-taught Drive', 90, 'cyan')}
+${skillBar('Ship-it Velocity', 100, 'cyan')}
 ${skillBar('Learning Speed', 90, 'cyan')}
 ${skillBar('Curiosity', 100, 'cyan')}
 ${skillBar('Caffeine Tolerance', 100, 'cyan')}
-${skillBar('Sleep Deprivation', 95, 'cyan')}
+${skillBar('Sleep Deprivation', 100, 'cyan')}
   <span class="dim">(ironic for the guy who built a sleep app)</span>
 
   <span class="green bold">⟩ Collaboration</span>
-${skillBar('Open Source Contrib.', 80, 'cyan')}
-${skillBar('Code Review', 80, 'cyan')}
-${skillBar('Pair Programming', 75)}
-${skillBar('Mentoring', 70)}
-${skillBar('Async Communication', 85, 'cyan')}
+${skillBar('Open Source Contrib.', 60)}
+${skillBar('Code Review', 60)}
+${skillBar('Pair Programming', 55)}
+${skillBar('Mentoring', 50)}
+${skillBar('Async Communication', 65)}
 
   <span class="green bold">⟩ Business & Strategy</span>
-${skillBar('Market Research', 80, 'cyan')}
-${skillBar('Startup Thinking', 85, 'cyan')}
-${skillBar('User Empathy', 80, 'cyan')}
-${skillBar('Freemium Modeling', 75)}
-${skillBar('Pitch / Demo', 80, 'cyan')}
+${skillBar('Market Research', 70)}
+${skillBar('Startup Thinking', 100, 'cyan')}
+${skillBar('User Empathy', 70)}
+${skillBar('Freemium Modeling', 65)}
+${skillBar('Pitch / Demo', 70)}
 
 <span class="dim">  ── Total: 160+ skills loaded ──</span>
 <span class="dim">  ── Status: ALL SYSTEMS OPERATIONAL ──</span>

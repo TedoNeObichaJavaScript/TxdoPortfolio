@@ -262,6 +262,7 @@ html, body {
   color: var(--green);
   padding-left: 0;
   margin-bottom: 8px;
+  white-space: pre-wrap;
 }
 
 #output .response .cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
@@ -286,6 +287,24 @@ html, body {
 #output .response a:hover {
   color: #fff;
   text-shadow: 0 0 15px var(--cyan);
+}
+
+/* Fix whitespace in flex layouts within responses */
+#output .response .neofetch,
+#output .response .color-blocks {
+  white-space: normal;
+}
+
+#output .response .neofetch-info {
+  white-space: pre-wrap;
+}
+
+/* Typing animation cursor */
+.type-cursor {
+  color: var(--green);
+  text-shadow: var(--glow-green);
+  animation: blink 0.7s step-end infinite;
+  font-weight: normal;
 }
 
 /* ASCII art */
