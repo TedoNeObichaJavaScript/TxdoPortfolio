@@ -4,6 +4,8 @@
    ============================================================= */
 
 // ─── Matrix Rain ────────────────────────────────────────────
+let matrixRafId = null;
+
 (function matrixRain() {
   const canvas = document.getElementById('matrix-rain');
   const ctx = canvas.getContext('2d');
@@ -15,7 +17,7 @@
   resize();
   window.addEventListener('resize', resize);
 
-  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>{}[]=/\\|;:';
+  const chars = '0123456789ABCDEF';
   const fontSize = 14;
   let columns = Math.floor(canvas.width / fontSize);
   let drops = Array(columns).fill(1);
@@ -25,7 +27,7 @@
     drops = Array(columns).fill(1);
   });
 
-  function draw() {
+  window._matrixDraw = function draw() {
     ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -34,7 +36,6 @@
       const x = i * fontSize;
       const y = drops[i] * fontSize;
 
-      // Mix green and cyan
       ctx.fillStyle = Math.random() > 0.85 ? '#00e5ff' : '#00ff41';
       ctx.font = fontSize + 'px monospace';
       ctx.fillText(char, x, y);
@@ -44,9 +45,9 @@
       }
       drops[i]++;
     }
-    requestAnimationFrame(draw);
-  }
-  draw();
+    matrixRafId = requestAnimationFrame(draw);
+  };
+  matrixRafId = requestAnimationFrame(window._matrixDraw);
 })();
 
 // ─── Boot Sequence ──────────────────────────────────────────
@@ -97,8 +98,30 @@ const bootLines = [
   { text: '', cls: '', delay: 400 },
 ];
 
+let bootSkipped = false;
+
 async function runBoot() {
+  // Add skip hint
+  const hint = document.createElement('div');
+  hint.className = 'boot-skip-hint';
+  hint.textContent = 'Press any key or click to skip';
+  document.body.appendChild(hint);
+
+  const skipHandler = () => { bootSkipped = true; };
+  document.addEventListener('keydown', skipHandler, { once: false });
+  document.addEventListener('click', skipHandler, { once: false });
+
   for (const line of bootLines) {
+    if (bootSkipped) {
+      // Dump remaining lines instantly
+      for (const remaining of bootLines.slice(bootLines.indexOf(line))) {
+        const s = document.createElement('span');
+        if (remaining.cls) s.className = remaining.cls;
+        s.textContent = remaining.text + '\n';
+        bootLog.appendChild(s);
+      }
+      break;
+    }
     const span = document.createElement('span');
     if (line.cls) span.className = line.cls;
     span.textContent = line.text + '\n';
@@ -106,14 +129,20 @@ async function runBoot() {
     bootLog.parentElement.scrollTop = bootLog.parentElement.scrollHeight;
     await sleep(line.delay);
   }
-  await sleep(300);
+
+  document.removeEventListener('keydown', skipHandler);
+  document.removeEventListener('click', skipHandler);
+  hint.remove();
+
+  if (!bootSkipped) await sleep(300);
   bootScreen.classList.add('fade-out');
-  await sleep(800);
+  await sleep(bootSkipped ? 300 : 800);
   bootScreen.style.display = 'none';
   terminal.classList.remove('hidden');
   terminal.classList.add('show');
   showWelcome();
   document.getElementById('command-input').focus();
+  requestAnimationFrame(() => updateCursor());
 }
 
 function sleep(ms) {
@@ -126,8 +155,8 @@ const commandInput = document.getElementById('command-input');
 const cursorBlock = document.getElementById('cursor-block');
 const terminalBody = document.getElementById('terminal-body');
 
-const commandHistory = [];
-let historyIndex = -1;
+const commandHistory = JSON.parse(localStorage.getItem('txdo-history') || '[]');
+let historyIndex = commandHistory.length;
 let currentPath = '~';
 let isTyping = false;
 let skipTyping = false;
@@ -155,6 +184,7 @@ commandInput.addEventListener('keydown', (e) => {
     if (cmd) {
       commandHistory.push(cmd);
       historyIndex = commandHistory.length;
+      try { localStorage.setItem('txdo-history', JSON.stringify(commandHistory.slice(-100))); } catch(e) {}
     }
     processCommand(cmd);
     commandInput.value = '';
@@ -276,7 +306,8 @@ function escapeHtml(str) {
 // ─── Tab completion ─────────────────────────────────────────
 const allCommands = ['help', 'about', 'skills', 'projects', 'contact', 'neofetch', 'whoami',
   'clear', 'history', 'ls', 'cat', 'pwd', 'date', 'uptime', 'sudo', 'exit',
-  'education', 'experience', 'socials', 'echo', 'banner', 'tree', 'matrix', 'gui', 'nooze'];
+  'education', 'experience', 'socials', 'echo', 'banner', 'tree', 'matrix', 'gui', 'nooze',
+  'theme', 'hack', 'sound', 'cowsay'];
 
 function tabComplete() {
   const val = commandInput.value;
@@ -324,6 +355,9 @@ function processCommand(cmd) {
     case 'matrix': cmdMatrix(); break;
     case 'gui': cmdGui(); break;
     case 'nooze': cmdNooze(); break;
+    case 'theme': cmdTheme(args); break;
+    case 'hack': cmdHack(); break;
+    case 'sound': cmdSound(); break;
     case 'cd': addResponse(`<span class="dim">There's no escaping this terminal.</span>`); break;
     case 'rm': addResponse(`<span class="red">Nice try. Permission denied: you can't delete my portfolio.</span>`); break;
     case 'vim': case 'nano': case 'vi': addResponse(`<span class="yellow">This isn't that kind of terminal. But I respect the reflex.</span>`); break;
@@ -332,7 +366,7 @@ function processCommand(cmd) {
     case 'ping': addResponse(`<span class="green">PONG!</span> <span class="dim">64 bytes from txdo.dev: time=0.42ms ttl=∞</span>`); break;
     case 'cowsay': cmdCowsay(args); break;
     default:
-      addResponse(`<span class="red">command not found:</span> ${escapeHtml(command)}\n<span class="dim">Type</span> <span class="cyan">'help'</span> <span class="dim">for available commands.</span>`);
+      addResponse(`<span class="red glitch-text">command not found:</span> ${escapeHtml(command)}\n<span class="dim">Type</span> <span class="cyan">'help'</span> <span class="dim">for available commands.</span>`);
   }
 
   scrollToBottom();
@@ -379,6 +413,9 @@ function cmdHelp() {
 <span class="cyan bold">║</span>  <span class="yellow">history</span>    <span class="dim">→</span> Command history                        <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="yellow">clear</span>      <span class="dim">→</span> Clear terminal                         <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="yellow">matrix</span>     <span class="dim">→</span> Toggle matrix rain intensity           <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="yellow">theme</span> <span class="dim">&lt;name&gt;</span><span class="dim">→</span> Color theme (green/amber/blue/red)    <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="yellow">sound</span>      <span class="dim">→</span> Toggle sound effects                   <span class="cyan bold">║</span>
+<span class="cyan bold">║</span>  <span class="yellow">hack</span>       <span class="dim">→</span> ???                                    <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="yellow">gui</span>        <span class="dim">→</span> Who needs a GUI?                       <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>                                                      <span class="cyan bold">║</span>
 <span class="cyan bold">║</span>  <span class="dim">↑/↓ arrows for history · Tab for autocomplete</span>      <span class="cyan bold">║</span>
@@ -395,7 +432,7 @@ function cmdAbout() {
 <span class="red bold">╚══════════════════════════════════════════════════════════════╝</span>
 
 <div class="neofetch" style="gap:20px;align-items:flex-start;">
-  <div style="flex-shrink:0;text-align:center;">
+  <div class="dossier-photo" style="flex-shrink:0;text-align:center;">
     <img src="az.webp" alt="TXDO" style="width:120px;height:120px;border-radius:6px;border:2px solid #00e5ff;box-shadow:0 0 15px #00e5ff40;object-fit:cover;">
     <div style="margin-top:6px;"><span class="cyan bold">[ PHOTO ID ]</span></div>
   </div>
@@ -765,12 +802,13 @@ function cmdContact() {
 
   <span class="green bold">⟩ Connect with me</span>
 
-  <span class="cyan">GitHub</span>     <span class="dim">→</span>  <a href="https://github.com/TedoNeObichaJavaScript" target="_blank">github.com/TedoNeObichaJavaScript</a>
-  <span class="cyan">LinkedIn</span>   <span class="dim">→</span>  <a href="https://www.linkedin.com/in/teodormirchev" target="_blank">in/teodormirchev</a>
-  <span class="cyan">Instagram</span>  <span class="dim">→</span>  <a href="https://instagram.com/t.db3" target="_blank">@t.db3</a>
-  <span class="cyan">Website</span>    <span class="dim">→</span>  <a href="https://noozealarm.com" target="_blank">noozealarm.com</a>
+  <span class="cyan">GitHub</span>     <span class="dim">→</span>  <a href="https://github.com/TedoNeObichaJavaScript" target="_blank">github.com/TedoNeObichaJavaScript</a> <span class="copy-btn" data-copy="https://github.com/TedoNeObichaJavaScript">[copy]</span>
+  <span class="cyan">LinkedIn</span>   <span class="dim">→</span>  <a href="https://www.linkedin.com/in/teodormirchev" target="_blank">in/teodormirchev</a> <span class="copy-btn" data-copy="https://www.linkedin.com/in/teodormirchev">[copy]</span>
+  <span class="cyan">Instagram</span>  <span class="dim">→</span>  <a href="https://instagram.com/t.db3" target="_blank">@t.db3</a> <span class="copy-btn" data-copy="https://instagram.com/t.db3">[copy]</span>
+  <span class="cyan">Website</span>    <span class="dim">→</span>  <a href="https://noozealarm.com" target="_blank">noozealarm.com</a> <span class="copy-btn" data-copy="https://noozealarm.com">[copy]</span>
 
   <span class="white">Always open to collaborations and cool projects.</span>
+  <span class="dim">Click [copy] to copy links to clipboard.</span>
 
 <span class="cyan bold">└─────────────────────────────────────────────────────┘</span>`);
 }
@@ -1058,7 +1096,8 @@ function cmdSudo(args) {
   } else if (subcmd.includes('hire')) {
     addResponse(`<span class="green bold">✓ SUDO HIRE ACCEPTED</span>
 <span class="white">Great choice! Let's build something amazing together.</span>
-<span class="dim">Run</span> <span class="cyan">'contact'</span> <span class="dim">to initiate the hiring protocol.</span>`);
+<span class="green">Opening secure communication channel...</span>`);
+    setTimeout(() => { window.open('mailto:tedo@txdo.dev?subject=Let%27s%20work%20together&body=Hey%20Txdo%2C%20I%20found%20your%20terminal%20portfolio%20and...', '_blank'); }, 800);
   } else {
     addResponse(`<span class="red">[sudo] password for visitor: </span><span class="dim">Nice try, but you're not root here.</span>
 <span class="dim">visitor is not in the sudoers file. This incident will be reported.</span>
@@ -1080,6 +1119,15 @@ function cmdMatrix() {
   const names = { 0: 'OFF', 1: 'NORMAL', 3: 'INTENSE' };
   canvas.style.opacity = levels[matrixIntensity];
   canvas.style.transition = 'opacity 0.5s ease';
+
+  // Stop RAF when off, restart when on
+  if (matrixIntensity === 0 && matrixRafId) {
+    cancelAnimationFrame(matrixRafId);
+    matrixRafId = null;
+  } else if (matrixIntensity !== 0 && !matrixRafId) {
+    matrixRafId = requestAnimationFrame(window._matrixDraw);
+  }
+
   addResponse(`<span class="green">Matrix rain:</span> <span class="cyan bold">${names[matrixIntensity]}</span>`);
 }
 
@@ -1188,6 +1236,160 @@ function cmdNooze() {
   <span class="green italic">"We don't want to improve the alarm.
    We want to improve the way you wake up."</span>`);
 }
+
+// ─── Theme Command ─────────────────────────────────────────
+function cmdTheme(args) {
+  const themes = ['green', 'amber', 'blue', 'red', 'purple'];
+  const name = (args[0] || '').toLowerCase();
+
+  if (!name || !themes.includes(name)) {
+    const current = document.documentElement.getAttribute('data-theme') || 'green';
+    addResponse(`<span class="cyan bold">Available themes:</span> ${themes.map(t => t === current ? `<span class="green bold">[${t}]</span>` : `<span class="dim">${t}</span>`).join('  ')}
+<span class="dim">Usage:</span> <span class="cyan">theme &lt;name&gt;</span>`);
+    return;
+  }
+
+  if (name === 'green') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', name);
+  }
+  localStorage.setItem('txdo-theme', name);
+  addResponse(`<span class="green">Theme set to:</span> <span class="cyan bold">${name.toUpperCase()}</span>`);
+}
+
+// Restore saved theme
+(function() {
+  const saved = localStorage.getItem('txdo-theme');
+  if (saved && saved !== 'green') {
+    document.documentElement.setAttribute('data-theme', saved);
+  }
+})();
+
+// ─── Hack Command (Easter Egg) ─────────────────────────────
+async function cmdHack() {
+  const lines = [
+    { text: '<span class="green">Initializing hack sequence...</span>', delay: 200 },
+    { text: '<span class="cyan">[▓▓░░░░░░░░░░░░░░░░░░] 10% — Bypassing firewall...</span>', delay: 300 },
+    { text: '<span class="cyan">[▓▓▓▓▓░░░░░░░░░░░░░░░] 25% — Injecting SQL into mainframe...</span>', delay: 400 },
+    { text: '<span class="yellow">[▓▓▓▓▓▓▓▓░░░░░░░░░░░░] 40% — Decrypting Pentagon files...</span>', delay: 350 },
+    { text: '<span class="yellow">[▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░] 55% — Downloading entire internet...</span>', delay: 300 },
+    { text: '<span class="orange">[▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░] 70% — Rerouting through 47 proxies...</span>', delay: 400 },
+    { text: '<span class="red">[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░] 85% — ACCESS ALMOST GRANTED...</span>', delay: 500 },
+    { text: '<span class="red bold">[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100% — ERROR!</span>', delay: 600 },
+    { text: '', delay: 200 },
+    { text: '<span class="red bold glitch-text">⚠  JUST KIDDING</span>', delay: 100 },
+    { text: '<span class="white">You\'re not a hacker. You\'re on a portfolio website.</span>', delay: 100 },
+    { text: '<span class="dim">But hey, you found an easter egg. That counts for something.</span>', delay: 100 },
+    { text: '<span class="green italic">"The best hackers hack their own career." — Txdo, probably</span>', delay: 0 },
+  ];
+
+  const div = document.createElement('div');
+  div.className = 'response';
+  output.appendChild(div);
+
+  for (const line of lines) {
+    div.innerHTML += line.text + '\n';
+    scrollToBottom();
+    await sleep(line.delay);
+  }
+}
+
+// ─── Sound Effects ─────────────────────────────────────────
+let soundEnabled = localStorage.getItem('txdo-sound') === 'true';
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playBeep(freq = 800, duration = 0.05, vol = 0.08) {
+  if (!soundEnabled) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  osc.type = 'square';
+  gain.gain.value = vol;
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function playKeySound() {
+  playBeep(600 + Math.random() * 400, 0.03, 0.04);
+}
+
+function playBootBeep() {
+  playBeep(1200, 0.15, 0.1);
+}
+
+function playErrorSound() {
+  playBeep(200, 0.15, 0.1);
+}
+
+// Attach key sound to input
+commandInput.addEventListener('keydown', (e) => {
+  if (e.key.length === 1 || e.key === 'Backspace') playKeySound();
+  if (e.key === 'Enter') playBeep(1000, 0.08, 0.06);
+});
+
+function cmdSound() {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('txdo-sound', soundEnabled);
+  if (soundEnabled) {
+    audioCtx.resume();
+    playBeep(1000, 0.1, 0.1);
+  }
+  addResponse(`<span class="green">Sound effects:</span> <span class="cyan bold">${soundEnabled ? 'ON' : 'OFF'}</span>`);
+}
+
+// ─── Konami Code Easter Egg ────────────────────────────────
+(function() {
+  const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let konamiIndex = 0;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === konami[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konami.length) {
+        konamiIndex = 0;
+        // Trigger a wild visual effect
+        document.body.style.transition = 'filter 0.3s';
+        document.body.style.filter = 'hue-rotate(90deg) saturate(3)';
+        setTimeout(() => {
+          document.body.style.filter = 'hue-rotate(180deg) saturate(2) brightness(1.5)';
+        }, 300);
+        setTimeout(() => {
+          document.body.style.filter = 'hue-rotate(270deg) invert(1)';
+        }, 600);
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+          document.body.style.transition = '';
+          const resp = document.createElement('div');
+          resp.className = 'response';
+          resp.innerHTML = `\n<span class="green bold">🎮 KONAMI CODE ACTIVATED!</span>\n<span class="cyan">+30 lives · God mode enabled · All achievements unlocked</span>\n<span class="dim">Just kidding. But you\'re clearly a person of culture.</span>\n`;
+          output.appendChild(resp);
+          scrollToBottom();
+        }, 900);
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+})();
+
+// ─── Click-to-Copy Handler ─────────────────────────────────
+document.addEventListener('click', (e) => {
+  const copyBtn = e.target.closest('.copy-btn');
+  if (copyBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    const text = copyBtn.getAttribute('data-copy');
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.classList.add('copied');
+      setTimeout(() => copyBtn.classList.remove('copied'), 1500);
+    });
+  }
+});
 
 // ─── Init ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {

@@ -161,8 +161,8 @@ html, body {
   background: var(--bg-terminal);
 }
 
-.terminal.hidden {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 .terminal.show {
@@ -534,7 +534,146 @@ html, body {
   100% { transform: translate(0); }
 }
 
+/* ===== THEME VARIANTS ===== */
+html[data-theme="amber"] {
+  --green: #ffb300;
+  --green-dim: #cc8f00;
+  --green-dark: #806000;
+  --cyan: #ffe082;
+  --cyan-dim: #ffd54f;
+  --glow-green: 0 0 10px #ffb30080, 0 0 20px #ffb30040, 0 0 40px #ffb30020;
+  --glow-cyan: 0 0 10px #ffe08280, 0 0 20px #ffe08240, 0 0 40px #ffe08220;
+}
+
+html[data-theme="blue"] {
+  --green: #42a5f5;
+  --green-dim: #1e88e5;
+  --green-dark: #0d47a1;
+  --cyan: #80d8ff;
+  --cyan-dim: #40c4ff;
+  --glow-green: 0 0 10px #42a5f580, 0 0 20px #42a5f540, 0 0 40px #42a5f520;
+  --glow-cyan: 0 0 10px #80d8ff80, 0 0 20px #80d8ff40, 0 0 40px #80d8ff20;
+}
+
+html[data-theme="red"] {
+  --green: #ff1744;
+  --green-dim: #d50000;
+  --green-dark: #8b0000;
+  --cyan: #ff8a80;
+  --cyan-dim: #ff5252;
+  --glow-green: 0 0 10px #ff174480, 0 0 20px #ff174440, 0 0 40px #ff174420;
+  --glow-cyan: 0 0 10px #ff8a8080, 0 0 20px #ff8a8040, 0 0 40px #ff8a8020;
+}
+
+html[data-theme="purple"] {
+  --green: #e040fb;
+  --green-dim: #ab47bc;
+  --green-dark: #6a1b9a;
+  --cyan: #ea80fc;
+  --cyan-dim: #ce93d8;
+  --glow-green: 0 0 10px #e040fb80, 0 0 20px #e040fb40, 0 0 40px #e040fb20;
+  --glow-cyan: 0 0 10px #ea80fc80, 0 0 20px #ea80fc40, 0 0 40px #ea80fc20;
+}
+
+/* ===== DOSSIER PHOTO HOVER ===== */
+.dossier-photo {
+  position: relative;
+  cursor: pointer;
+}
+
+.dossier-photo img {
+  transition: all 0.35s ease;
+}
+
+.dossier-photo:hover img {
+  width: 280px !important;
+  height: 280px !important;
+  border-radius: 8px !important;
+  border-color: #00ff41 !important;
+  box-shadow: 0 0 30px #00ff4160, 0 0 60px #00e5ff30 !important;
+  z-index: 50;
+  position: relative;
+}
+
+/* ===== GLITCH ON ERROR ===== */
+.glitch-text {
+  animation: glitch 0.3s ease 2;
+}
+
+/* ===== COPY TOOLTIP ===== */
+.copy-btn {
+  cursor: pointer;
+  position: relative;
+  border-bottom: 1px dashed var(--cyan);
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  color: #fff;
+  text-shadow: 0 0 15px var(--cyan);
+}
+
+.copy-btn::after {
+  content: 'Copied!';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: var(--bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.copy-btn.copied::after {
+  opacity: 1;
+}
+
+/* ===== BOOT SKIP HINT ===== */
+.boot-skip-hint {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: #555;
+  font-size: 12px;
+  z-index: 501;
+  animation: blink 2s step-end infinite;
+}
+
 /* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 601px) {
+  .terminal {
+    width: min(98vw, 850px);
+    height: min(92vh, 620px);
+  }
+
+  .terminal-body {
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .neofetch {
+    gap: 20px;
+  }
+
+  .neofetch-ascii {
+    font-size: 9px;
+  }
+
+  .skill-label {
+    min-width: 120px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 600px) {
   .terminal {
     width: 100vw;
